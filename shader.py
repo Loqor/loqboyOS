@@ -8,6 +8,8 @@ pygame.init()
 
 screen = pygame.display.set_mode((800, 480), pygame.OPENGL | pygame.DOUBLEBUF)
 display = pygame.Surface((800, 480))
+pygame.display.set_caption("PipOS")
+pygame.display.set_icon(display)
 ctx = moderngl.create_context()
 
 clock = pygame.time.Clock()
@@ -70,7 +72,7 @@ const float ScanlineBrightScale = 1.0;
 const float ScanlineBrightOffset = 0.0;
 const float ScanlineOffset = 0.0;
 const vec3 Floor = vec3(0.05, 0.05, 0.05);
-const vec3 Power = vec3(0.8, 0.8, 0.8);
+const vec3 Power = vec3(0.8, 0.8, 0.8);  // Consider adjusting this for brightness
 
 void main() {
     vec2 PinUnitCoord = texCoord * Two.xy - One.xy;
@@ -82,25 +84,22 @@ void main() {
     ScreenClipCoord += Half.xy;
     ScreenClipCoord += CurvatureClipCurve;
 
-    // -- Alpha Clipping --
     if (ScreenClipCoord.x < 0.0) discard;
     if (ScreenClipCoord.y < 0.0) discard;
     if (ScreenClipCoord.x > 1.0) discard;
     if (ScreenClipCoord.y > 1.0) discard;
 
-    // Use ScreenClipCoord to sample the texture
     vec4 InTexel = texture(DiffuseSampler, ScreenClipCoord);
 
     float InnerSine = texCoord.y * InSize.y * ScanlineScale * 0.25;
     float ScanBrightMod = sin(InnerSine * Pi + (time * 0.12) * InSize.y * 0.25);
-    float ScanBrightness = mix(4.0, (pow(ScanBrightMod * ScanBrightMod, ScanlineHeight) * ScanlineBrightScale + 1.0) * 0.5, ScanlineAmount);
+    float ScanBrightness = mix(1.0, (pow(ScanBrightMod * ScanBrightMod, ScanlineHeight) * ScanlineBrightScale + 1.0) * 0.5, ScanlineAmount);
     vec3 ScanlineTexel = InTexel.rgb * ScanBrightness;
 
-    ScanlineTexel = vec3(0.299 * ScanlineTexel.r + 0.587 * ScanlineTexel.g + 0.114 * ScanlineTexel.b);
+    vec3 grayscale = vec3(dot(ScanlineTexel, vec3(1, 1, 1)));  // Adjusted grayscale conversion
+    grayscale = pow(grayscale, Power);  // Gamma correction
 
-    ScanlineTexel.rgb = pow(ScanlineTexel.rgb, Power);
-
-    fragColor = vec4(colorization * ScanlineTexel, 1.0);
+    fragColor = vec4(colorization * grayscale, 1.0);
 }
 '''
 
@@ -144,9 +143,9 @@ while True:
     # program['resolution'] = (ctx.screen.width, ctx.screen.height)
     program['time'] = t
     program['colorization'] = (
-        255.0 / 255.0,
-        191.0 / 255.0,
-        0.0 / 255.0
+        255.0 / 255.0,  # Red
+        191.0 / 255.0,  # Green
+        0.0 / 255.0     # Blue
     )
     render_object.render(mode=moderngl.TRIANGLE_STRIP)
 
