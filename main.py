@@ -137,8 +137,7 @@ while True:
             sys.exit()
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             if button_rect.collidepoint(event.pos):
-                pygame.quit()
-                sys.exit()
+                background = pygame.image.load('assets/map.png').convert_alpha()
 
         # if button_rect.collidepoint(pygame.mouse.get_pos()):
         #     pygame.draw.rect(button_surface, (0, 100, 100), (1, 1, 148, 48))
