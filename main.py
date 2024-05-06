@@ -152,15 +152,15 @@ while True:
             sys.exit()
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             if STATButtonRect.collidepoint(event.pos):
-                background = pygame.image.load('assets/minecraft.png').convert_alpha()
+                background = pygame.image.load('assets/cleanv2.png').convert_alpha()
             if INVButtonRect.collidepoint(event.pos):
-                background = pygame.image.load('assets/map.png').convert_alpha()
+                background = pygame.image.load('assets/ITEM.png').convert_alpha()
             if DATAButtonRect.collidepoint(event.pos):
                 background = pygame.image.load('assets/minecraft.png').convert_alpha()
             if MAPButtonRect.collidepoint(event.pos):
                 background = pygame.image.load('assets/map.png').convert_alpha()
             if RADIOButtonRect.collidepoint(event.pos):
-                background = pygame.image.load('assets/minecraft.png').convert_alpha()
+                background = pygame.image.load('assets/RADIO.png').convert_alpha()
         if STATButtonRect.collidepoint(pygame.mouse.get_pos()):
             statColor = (0, 255, 255)
         else:
