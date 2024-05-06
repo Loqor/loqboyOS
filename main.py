@@ -13,11 +13,9 @@ heightY = SCREEN_HEIGHT / 2
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.OPENGL | pygame.DOUBLEBUF)
 display = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
-button_surface = pygame.Surface((100, 50), pygame.SRCALPHA)
 pygame.display.set_caption("PipOS")
 pygame.display.set_icon(display)
 ctx = moderngl.create_context()
-colorVal = (0, 120, 120)
 
 clock = pygame.time.Clock()
 
@@ -125,9 +123,26 @@ def surf_to_texture(surf):
     return tex
 
 
-button_rect = pygame.Rect(widthX + 71, heightY - 242, 100, 50)
+# BUTTONS
+STATButton = pygame.Surface((100, 50), pygame.SRCALPHA)
+INVButton = pygame.Surface((100, 50), pygame.SRCALPHA)
+DATAButton = pygame.Surface((100, 50), pygame.SRCALPHA)
+MAPButton = pygame.Surface((100, 50), pygame.SRCALPHA)
+RADIOButton = pygame.Surface((100, 50), pygame.SRCALPHA)
+
+STATButtonRect = pygame.Rect(widthX - 21, heightY - 242, 100, 50)
+INVButtonRect = pygame.Rect(widthX + 21, heightY - 242, 100, 50)
+DATAButtonRect = pygame.Rect(widthX + 51, heightY - 242, 100, 50)
+MAPButtonRect = pygame.Rect(widthX + 71, heightY - 242, 100, 50)
+RADIOButtonRect = pygame.Rect(widthX + 121, heightY - 242, 100, 50)
+
 
 t = 0
+statColor = (0, 120, 120)
+invColor = (0, 120, 120)
+dataColor = (0, 120, 120)
+mapColor = (0, 120, 120)
+radioColor = (0, 120, 120)
 
 while True:
 
@@ -136,25 +151,53 @@ while True:
             pygame.quit()
             sys.exit()
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            if button_rect.collidepoint(event.pos):
+            if STATButtonRect.collidepoint(event.pos):
+                background = pygame.image.load('assets/minecraft.png').convert_alpha()
+            if INVButtonRect.collidepoint(event.pos):
                 background = pygame.image.load('assets/map.png').convert_alpha()
-
-        # if button_rect.collidepoint(pygame.mouse.get_pos()):
-        #     pygame.draw.rect(button_surface, (0, 100, 100), (1, 1, 148, 48))
-        # else:
-        #     pygame.draw.rect(button_surface, (100, 100, 100), (0, 0, 150, 50))
-        #     pygame.draw.rect(button_surface, (100, 100, 100), (1, 1, 148, 48))
-        #     pygame.draw.rect(button_surface, (100, 100, 100), (1, 1, 148, 1), 2)
-        #     pygame.draw.rect(button_surface, (100, 100, 100), (1, 48, 148, 10), 2)
-        if button_rect.collidepoint(pygame.mouse.get_pos()):
-            colorVal = (0, 255, 255)
+            if DATAButtonRect.collidepoint(event.pos):
+                background = pygame.image.load('assets/minecraft.png').convert_alpha()
+            if MAPButtonRect.collidepoint(event.pos):
+                background = pygame.image.load('assets/minecraft.png').convert_alpha()
+            if RADIOButtonRect.collidepoint(event.pos):
+                background = pygame.image.load('assets/minecraft.png').convert_alpha()
+        if STATButtonRect.collidepoint(pygame.mouse.get_pos()):
+            statColor = (0, 255, 255)
         else:
-            colorVal = (0, 120, 120)
+            statColor = (0, 120, 120)
+        if INVButtonRect.collidepoint(pygame.mouse.get_pos()):
+            invColor = (0, 255, 255)
+        else:
+            invColor = (0, 120, 120)
+        if DATAButtonRect.collidepoint(pygame.mouse.get_pos()):
+            dataColor = (0, 255, 255)
+        else:
+            dataColor = (0, 120, 120)
+        if MAPButtonRect.collidepoint(pygame.mouse.get_pos()):
+            mapColor = (0, 255, 255)
+        else:
+            mapColor = (0, 120, 120)
+        if RADIOButtonRect.collidepoint(pygame.mouse.get_pos()):
+            radioColor = (0, 255, 255)
+        else:
+            radioColor = (0, 120, 120)
 
-    text = font.render("MAP", True, colorVal)
-    text_rect = text.get_rect(center=(button_surface.get_width() / 2, button_surface.get_height() / 2))
+    stats = font.render("STATS", True, statColor)
+    statsRect = stats.get_rect(center=(STATButton.get_width() / 2, STATButton.get_height() / 2))
+    inv = font.render("INV", True, invColor)
+    invRect = inv.get_rect(center=(INVButton.get_width() / 2, INVButton.get_height() / 2))
+    data = font.render("DATA", True, dataColor)
+    dataRect = data.get_rect(center=(DATAButton.get_width() / 2, DATAButton.get_height() / 2))
+    maps = font.render("MAP", True, mapColor)
+    mapRect = maps.get_rect(center=(MAPButton.get_width() / 2, MAPButton.get_height() / 2))
+    radio = font.render("RADIO", True, radioColor)
+    radioRect = radio.get_rect(center=(RADIOButton.get_width() / 2, RADIOButton.get_height() / 2))
 
-    button_surface.blit(text, text_rect)
+    STATButton.blit(stats, statsRect)
+    INVButton.blit(inv, invRect)
+    DATAButton.blit(data, dataRect)
+    MAPButton.blit(maps, mapRect)
+    RADIOButton.blit(radio, radioRect)
 
     # Rendering code, ANIME DO NOT TOUCH OR I WILL SMITE YOU WITH A FUCKING NUCLEAR BOMB
     t += 1
@@ -163,7 +206,7 @@ while True:
     background_scaled = pygame.transform.scale(background, (800, 480))
     display.blit(background_scaled, (0, 0))
 
-    display.blit(button_surface, (button_rect.x, button_rect.y))
+    display.blit(MAPButton, (MAPButtonRect.x, MAPButtonRect.y))
 
     frame_tex = surf_to_texture(display)
     frame_tex.use(0)
