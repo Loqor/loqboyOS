@@ -121,6 +121,10 @@ t = 0
 
 while True:
 
+    display.fill((0, 0, 0))
+    img2 = pygame.transform.scale(img, (800, 480))
+    display.blit(img2, (0, 0))
+
     t += 1
 
     for event in pygame.event.get():
@@ -145,9 +149,6 @@ while True:
         0.0 / 255.0
     )
     render_object.render(mode=moderngl.TRIANGLE_STRIP)
-    display.fill((0, 0, 0))
-    img2 = pygame.transform.scale(img, (800, 480))
-    display.blit(img2, (0, 0))
 
     pygame.display.flip()
 
