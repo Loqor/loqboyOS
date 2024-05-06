@@ -21,7 +21,7 @@ clock = pygame.time.Clock()
 
 font = pygame.font.Font('fonts/monofonto.ttf', 30)
 
-background = pygame.image.load('assets/clean.png').convert_alpha()
+background = pygame.image.load('assets/cleanv2.png').convert_alpha()
 
 quad_buffer = ctx.buffer(data=array('f', [
     # position (x, y), uv co-ords (x, y)
@@ -158,7 +158,7 @@ while True:
             if DATAButtonRect.collidepoint(event.pos):
                 background = pygame.image.load('assets/minecraft.png').convert_alpha()
             if MAPButtonRect.collidepoint(event.pos):
-                background = pygame.image.load('assets/minecraft.png').convert_alpha()
+                background = pygame.image.load('assets/map.png').convert_alpha()
             if RADIOButtonRect.collidepoint(event.pos):
                 background = pygame.image.load('assets/minecraft.png').convert_alpha()
         if STATButtonRect.collidepoint(pygame.mouse.get_pos()):
