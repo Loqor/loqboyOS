@@ -12,7 +12,7 @@ ctx = moderngl.create_context()
 
 clock = pygame.time.Clock()
 
-img = pygame.image.load('assets/minecraft.png').convert_alpha()
+img = pygame.image.load('assets/clean.png').convert_alpha()
 
 quad_buffer = ctx.buffer(data=array('f', [
     # position (x, y), uv co-ords (x, y)
@@ -50,7 +50,6 @@ frag_shader = '''
 uniform sampler2D DiffuseSampler;
 uniform vec2 InSize;
 uniform float time;
-// uniform vec2 resolution;
 uniform vec3 colorization;
 
 in vec2 texCoord;
@@ -74,18 +73,8 @@ const vec3 Floor = vec3(0.05, 0.05, 0.05);
 const vec3 Power = vec3(0.8, 0.8, 0.8);
 
 void main() {
-    // vec2 uv = (texCoord * 2.0 - resolution.xy) / resolution.y;
-    vec4 InTexel = texture(DiffuseSampler, texCoord);
-
     vec2 PinUnitCoord = texCoord * Two.xy - One.xy;
     float PincushionR2 = pow(length(PinUnitCoord), 2.0);
-    vec2 PincushionCurve = PinUnitCoord * PincushionAmount * PincushionR2;
-    vec2 ScanCoord = texCoord;
-
-    ScanCoord *= One.xy - PincushionAmount * 0.2;
-    ScanCoord += PincushionAmount * 0.1;
-    ScanCoord += PincushionCurve;
-
     vec2 CurvatureClipCurve = PinUnitCoord * CurvatureAmount * PincushionR2;
     vec2 ScreenClipCoord = texCoord;
     ScreenClipCoord -= Half.xy;
@@ -94,29 +83,27 @@ void main() {
     ScreenClipCoord += CurvatureClipCurve;
 
     // -- Alpha Clipping --
-    if (ScanCoord.x < 0.0) discard;
-    if (ScanCoord.y < 0.0) discard;
-    if (ScanCoord.x > 1.0) discard;
-    if (ScanCoord.y > 1.0) discard;
+    if (ScreenClipCoord.x < 0.0) discard;
+    if (ScreenClipCoord.y < 0.0) discard;
+    if (ScreenClipCoord.x > 1.0) discard;
+    if (ScreenClipCoord.y > 1.0) discard;
 
-    // -- Scanline Simulation --
-    float InnerSine = ScanCoord.y * InSize.y * ScanlineScale * 0.25;
+    // Use ScreenClipCoord to sample the texture
+    vec4 InTexel = texture(DiffuseSampler, ScreenClipCoord);
+
+    float InnerSine = texCoord.y * InSize.y * ScanlineScale * 0.25;
     float ScanBrightMod = sin(InnerSine * Pi + (time * 0.12) * InSize.y * 0.25);
     float ScanBrightness = mix(4.0, (pow(ScanBrightMod * ScanBrightMod, ScanlineHeight) * ScanlineBrightScale + 1.0) * 0.5, ScanlineAmount);
     vec3 ScanlineTexel = InTexel.rgb * ScanBrightness;
 
-    // -- Color Compression (increasing the floor of the signal without affecting the ceiling) --
-    //ScanlineTexel = Floor + (One.xyz - Floor) * ScanlineTexel;
-    
     ScanlineTexel = vec3(0.299 * ScanlineTexel.r + 0.587 * ScanlineTexel.g + 0.114 * ScanlineTexel.b);
 
     ScanlineTexel.rgb = pow(ScanlineTexel.rgb, Power);
 
-    //fragColor = vec4(ScanlineTexel.rgb, 1.0);
-    
     fragColor = vec4(colorization * ScanlineTexel, 1.0);
 }
 '''
+
 
 program = ctx.program(vertex_shader=vert_shader, fragment_shader=frag_shader)
 render_object = ctx.vertex_array(program, [(quad_buffer, '4f', 'Position')])
