@@ -6,8 +6,11 @@ import moderngl
 
 pygame.init()
 
-screen = pygame.display.set_mode((800, 480), pygame.OPENGL | pygame.DOUBLEBUF)
-display = pygame.Surface((800, 480))
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 480
+
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.OPENGL | pygame.DOUBLEBUF)
+display = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("PipOS")
 pygame.display.set_icon(display)
 ctx = moderngl.create_context()
@@ -104,10 +107,8 @@ void main() {
 }
 '''
 
-
 program = ctx.program(vertex_shader=vert_shader, fragment_shader=frag_shader)
 render_object = ctx.vertex_array(program, [(quad_buffer, '4f', 'Position')])
-
 
 def surf_to_texture(surf):
     tex = ctx.texture(surf.get_size(), 4)
@@ -121,16 +122,17 @@ t = 0
 
 while True:
 
-    display.fill((0, 0, 0))
-    img2 = pygame.transform.scale(img, (800, 480))
-    display.blit(img2, (0, 0))
-
-    t += 1
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+
+    # Rendering code, ANIME DO NOT TOUCH OR I WILL SMITE YOU WITH A FUCKING NUCLEAR BOMB
+    t += 1
+
+    display.fill((0, 0, 0))
+    img2 = pygame.transform.scale(img, (800, 480))
+    display.blit(img2, (0, 0))
 
     frame_tex = surf_to_texture(display)
     frame_tex.use(0)
@@ -143,9 +145,9 @@ while True:
     program['OutSize'] = (1, -1)
     program['time'] = t
     program['colorization'] = (
-        255.0 / 255.0,  # Red
-        191.0 / 255.0,  # Green
-        0.0 / 255.0     # Blue
+        25.0 / 255.0,  # Red
+        150.0 / 255.0,  # Green
+        255.0 / 255.0  # Blue
     )
     program['brightness'] = 1.0  # Brightness value - default value is 1.0
     render_object.render(mode=moderngl.TRIANGLE_STRIP)

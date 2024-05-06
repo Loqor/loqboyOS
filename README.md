@@ -13,7 +13,7 @@ to learn python to make an entire system OS based around a language you don't ev
 - Amber: (255, 191, 0)
 - White: (255, 255, 255)
 - Indigo: (200, 0, 200)
-- Ice Blue: (124, 124, 255)
+- Ice Blue: (0, 255, 255)
 - Red: (255, 0, 0)
 - Blue: (0, 0, 255)
 - Orange: (210, 210, 0)
