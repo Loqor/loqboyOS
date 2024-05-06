@@ -53,6 +53,7 @@ uniform sampler2D DiffuseSampler;
 uniform vec2 InSize;
 uniform float time;
 uniform vec3 colorization;
+uniform float brightness;
 
 in vec2 texCoord;
 out vec4 fragColor;
@@ -72,7 +73,7 @@ const float ScanlineBrightScale = 1.0;
 const float ScanlineBrightOffset = 0.0;
 const float ScanlineOffset = 0.0;
 const vec3 Floor = vec3(0.05, 0.05, 0.05);
-const vec3 Power = vec3(0.8, 0.8, 0.8);  // Consider adjusting this for brightness
+const vec3 Power = vec3(0.8, 0.8, 0.8);
 
 void main() {
     vec2 PinUnitCoord = texCoord * Two.xy - One.xy;
@@ -93,7 +94,7 @@ void main() {
 
     float InnerSine = texCoord.y * InSize.y * ScanlineScale * 0.25;
     float ScanBrightMod = sin(InnerSine * Pi + (time * 0.12) * InSize.y * 0.25);
-    float ScanBrightness = mix(1.0, (pow(ScanBrightMod * ScanBrightMod, ScanlineHeight) * ScanlineBrightScale + 1.0) * 0.5, ScanlineAmount);
+    float ScanBrightness = mix(brightness, (pow(ScanBrightMod * ScanBrightMod, ScanlineHeight) * ScanlineBrightScale + 1.0) * 0.5, ScanlineAmount);
     vec3 ScanlineTexel = InTexel.rgb * ScanBrightness;
 
     vec3 grayscale = vec3(dot(ScanlineTexel, vec3(1, 1, 1)));  // Adjusted grayscale conversion
@@ -140,17 +141,15 @@ while True:
     program['DiffuseSampler'] = 0
     program['InSize'] = (1, 1)
     program['OutSize'] = (1, -1)
-    # program['resolution'] = (ctx.screen.width, ctx.screen.height)
     program['time'] = t
     program['colorization'] = (
         255.0 / 255.0,  # Red
         191.0 / 255.0,  # Green
         0.0 / 255.0     # Blue
     )
+    program['brightness'] = 1.0  # Brightness value - default value is 1.0
     render_object.render(mode=moderngl.TRIANGLE_STRIP)
 
     pygame.display.flip()
-
     frame_tex.release()
-
     clock.tick(60)
