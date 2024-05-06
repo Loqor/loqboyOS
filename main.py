@@ -8,16 +8,22 @@ pygame.init()
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 480
+widthX = SCREEN_WIDTH / 2
+heightY = SCREEN_HEIGHT / 2
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.OPENGL | pygame.DOUBLEBUF)
 display = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
+button_surface = pygame.Surface((100, 50), pygame.SRCALPHA)
 pygame.display.set_caption("PipOS")
 pygame.display.set_icon(display)
 ctx = moderngl.create_context()
+colorVal = (0, 120, 120)
 
 clock = pygame.time.Clock()
 
-img = pygame.image.load('assets/clean.png').convert_alpha()
+font = pygame.font.Font('fonts/monofonto.ttf', 30)
+
+background = pygame.image.load('assets/clean.png').convert_alpha()
 
 quad_buffer = ctx.buffer(data=array('f', [
     # position (x, y), uv co-ords (x, y)
@@ -110,6 +116,7 @@ void main() {
 program = ctx.program(vertex_shader=vert_shader, fragment_shader=frag_shader)
 render_object = ctx.vertex_array(program, [(quad_buffer, '4f', 'Position')])
 
+
 def surf_to_texture(surf):
     tex = ctx.texture(surf.get_size(), 4)
     tex.filter = (moderngl.BLEND, moderngl.BLEND)
@@ -117,6 +124,8 @@ def surf_to_texture(surf):
     tex.write(surf.get_view('1'))
     return tex
 
+
+button_rect = pygame.Rect(widthX + 71, heightY - 242, 100, 50)
 
 t = 0
 
@@ -126,13 +135,36 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            if button_rect.collidepoint(event.pos):
+                pygame.quit()
+                sys.exit()
+
+        # if button_rect.collidepoint(pygame.mouse.get_pos()):
+        #     pygame.draw.rect(button_surface, (0, 100, 100), (1, 1, 148, 48))
+        # else:
+        #     pygame.draw.rect(button_surface, (100, 100, 100), (0, 0, 150, 50))
+        #     pygame.draw.rect(button_surface, (100, 100, 100), (1, 1, 148, 48))
+        #     pygame.draw.rect(button_surface, (100, 100, 100), (1, 1, 148, 1), 2)
+        #     pygame.draw.rect(button_surface, (100, 100, 100), (1, 48, 148, 10), 2)
+        if button_rect.collidepoint(pygame.mouse.get_pos()):
+            colorVal = (0, 255, 255)
+        else:
+            colorVal = (0, 120, 120)
+
+    text = font.render("MAP", True, colorVal)
+    text_rect = text.get_rect(center=(button_surface.get_width() / 2, button_surface.get_height() / 2))
+
+    button_surface.blit(text, text_rect)
 
     # Rendering code, ANIME DO NOT TOUCH OR I WILL SMITE YOU WITH A FUCKING NUCLEAR BOMB
     t += 1
 
     display.fill((0, 0, 0))
-    img2 = pygame.transform.scale(img, (800, 480))
-    display.blit(img2, (0, 0))
+    background_scaled = pygame.transform.scale(background, (800, 480))
+    display.blit(background_scaled, (0, 0))
+
+    display.blit(button_surface, (button_rect.x, button_rect.y))
 
     frame_tex = surf_to_texture(display)
     frame_tex.use(0)
