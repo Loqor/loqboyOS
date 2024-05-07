@@ -1,15 +1,19 @@
 import sys
-from array import array
 import pygame
-import spritesheet
 import moderngl
+import spritesheet
+from array import array
 
 pygame.init()
 
+# When we do the actual Pip Boy, I'm pretty sure we can just get the window's scale instead
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 480
+
 widthX = SCREEN_WIDTH / 2
 heightY = SCREEN_HEIGHT / 2
+
+# These are horrible, no good, very bad
 selectedTabTop = [
     [0, "      ┌     ┐                                             "],
     [1, "                ┌    ┐                                    "],
@@ -27,9 +31,22 @@ selectedTabBtm = [
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.OPENGL | pygame.DOUBLEBUF)
 display = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
+
 pygame.display.set_caption("PipOS")
 pygame.display.set_icon(display)
+
+# Flicker start up, self-evident by the name. make this 'False' if you don't want it to appear on startup
+startUpFlicker = True
+
+# ModernGL context, it's for the actual rendering
 ctx = moderngl.create_context()
+
+# Clock value, dictates the speed of the game
+clock = pygame.time.Clock()
+
+# Indexes for different tabs/submenus in the Pip Boy
+indexOfTab = 0
+indexOfSubmenu = 0
 
 # Sprite sheet stuff for the Vault Boy
 sprite_sheet_image = pygame.image.load('assets/vault_boy/vault_boy_sequence.png').convert_alpha()
@@ -42,12 +59,9 @@ last_update = pygame.time.get_ticks()
 animation_cooldown = 250
 frame = 0
 
+# For loop iterating through the animations
 for x in range(animation_steps):
     animation_list.append(sprite_sheet.get_image(x, 268, 268, 1, (0, 0, 0)))
-
-clock = pygame.time.Clock()
-indexOfTab = 0
-indexOfSubmenu = 0
 
 # For the submenus. @TODO I REFUSE TO ORGANIZE I'LL DO IT LATER
 defaultStatusPos = (100, 40)
@@ -56,8 +70,6 @@ defaultPerksPos = (300, 40)
 statusPos = defaultStatusPos
 specialPos = defaultSpecialPos
 perksPos = defaultPerksPos
-
-startUpFlicker = True
 
 font = pygame.font.Font('fonts/monofonto rg.ttf', 26)
 font_smaller = pygame.font.Font('fonts/monofonto rg.ttf', 24)
