@@ -50,7 +50,7 @@ for x in range(animation_steps):
 
 clock = pygame.time.Clock()
 indexOfTab = 0
-startUpFlicker = False
+startUpFlicker = True
 
 font = pygame.font.Font('fonts/monofonto rg.ttf', 26)
 font_smaller = pygame.font.Font('fonts/monofonto rg.ttf', 24)
@@ -112,7 +112,7 @@ const float Pi = 3.1415926535;
 const float PincushionAmount = 0.02;
 const float CurvatureAmount = 0.02;
 const float ScanlineAmount = 0.8;
-const float ScanlineScale = 760;
+const float ScanlineScale = 480;
 const float ScanlineHeight = 1.0;
 const float ScanlineBrightScale = 1.0;
 const float ScanlineBrightOffset = 0.0;
@@ -129,7 +129,7 @@ void main() {
         float baseSpeed = timeRunning; // Initial speed of the scrolling
         float scrollSpeed = 0;
 
-        scrollSpeed = min(baseSpeed, 0.48);
+        scrollSpeed = min(baseSpeed, 1);
 
         modifiedTexCoord.y += time * scrollSpeed;
         
@@ -139,11 +139,11 @@ void main() {
         // Setting ScanlineScale to -20 when shuckScreen is greater than 0
         scanlineScaleFactor = 470;
         
-        if(baseSpeed >= 0.48) {
+        if(baseSpeed >= 0.28) {
             modifiedTexCoord = texCoord;
         }
     }
-
+    
     vec2 PinUnitCoord = modifiedTexCoord * Two.xy - One.xy;
     float PincushionR2 = pow(length(PinUnitCoord), 2.0);
     vec2 CurvatureClipCurve = PinUnitCoord * CurvatureAmount * PincushionR2;
@@ -345,21 +345,24 @@ while True:
     )
     brightness = 0
     if startUpFlicker:
-        brightness = ((t * 0.001) / 0.48)
+        brightness = ((t * 0.002) / 0.35)
     else:
-        brightness = 1  # Brightness value - default value is 1.0
+        brightness = 1.25  # Brightness value - default value is 1.0
     program['brightness'] = brightness
     program['shuckScreen'] = startUpFlicker
     timeRunning = 0.0
     if startUpFlicker:
-        timeRunning = t * 0.001
-        if timeRunning > 0.48:
+        timeRunning = t * 0.002
+        print(timeRunning)
+        if timeRunning >= 0.28:
             startUpFlicker = False
+            timeRunning = 0
     else:
         timeRunning = 0
     program['timeRunning'] = timeRunning
 
     # Actual rendering of the screen itself
+    ctx.clear(0, 0, 0, 1, -1)
     render_object.render(mode=moderngl.TRIANGLE_STRIP)
 
     # Frame update
