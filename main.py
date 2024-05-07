@@ -35,7 +35,7 @@ ctx = moderngl.create_context()
 
 clock = pygame.time.Clock()
 indexOfTab = 0
-shouldBlip = False
+startUpFlicker = True
 
 font = pygame.font.Font('fonts/monofonto rg.ttf', 26)
 font_smaller = pygame.font.Font('fonts/monofonto rg.ttf', 24)
@@ -114,7 +114,7 @@ void main() {
         float baseSpeed = timeRunning; // Initial speed of the scrolling
         float scrollSpeed = 0;
 
-        scrollSpeed = min(baseSpeed, 0.44);
+        scrollSpeed = min(baseSpeed, 0.48);
 
         modifiedTexCoord.y += time * scrollSpeed;
         
@@ -124,7 +124,7 @@ void main() {
         // Setting ScanlineScale to -20 when shuckScreen is greater than 0
         scanlineScaleFactor = 470;
         
-        if(baseSpeed >= 0.44) {
+        if(baseSpeed >= 0.48) {
             modifiedTexCoord = texCoord;
         }
     }
@@ -198,7 +198,7 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        if event.type == pygame.MOUSEBUTTONDOWN and not shouldBlip and event.button == 1:
+        if event.type == pygame.MOUSEBUTTONDOWN and not startUpFlicker and event.button == 1:
             if STATButtonRect.collidepoint(event.pos):
                 indexOfTab = 0
             if INVButtonRect.collidepoint(event.pos):
@@ -301,6 +301,8 @@ while True:
 
     frame_tex = surf_to_texture(display)
     frame_tex.use(0)
+
+    # Program Uniforms (for shaders, **do not touch**).
     program['ProjMat'] = [2.0, 0.0, 0.0, 0.0,
                           0.0, 2.0, 0.0, 0.0,
                           0.0, 0.0, 2.0, 0.0,
@@ -315,22 +317,25 @@ while True:
         0.0 / 255.0  # Blue
     )
     brightness = 0
-    if shouldBlip:
-        brightness = ((t * 0.001) / 0.44)
+    if startUpFlicker:
+        brightness = ((t * 0.001) / 0.48)
     else:
         brightness = 1  # Brightness value - default value is 1.0
     program['brightness'] = brightness
-    program['shuckScreen'] = shouldBlip
+    program['shuckScreen'] = startUpFlicker
     timeRunning = 0.0
-    if shouldBlip:
+    if startUpFlicker:
         timeRunning = t * 0.001
-        if timeRunning > 0.44:
-            shouldBlip = False
+        if timeRunning > 0.48:
+            startUpFlicker = False
     else:
         timeRunning = 0
     program['timeRunning'] = timeRunning
+
+    # Actual rendering of the screen itself
     render_object.render(mode=moderngl.TRIANGLE_STRIP)
 
+    # Frame update
     pygame.display.flip()
     frame_tex.release()
-    clock.tick(60)
+    clock.tick(75)
