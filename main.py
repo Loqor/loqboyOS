@@ -130,11 +130,11 @@ DATAButton = pygame.Surface((100, 50), pygame.SRCALPHA)
 MAPButton = pygame.Surface((100, 50), pygame.SRCALPHA)
 RADIOButton = pygame.Surface((100, 50), pygame.SRCALPHA)
 
-STATButtonRect = pygame.Rect(94, heightY - 242, 100, 50)
-INVButtonRect = pygame.Rect(222, heightY - 242, 100, 50)
+STATButtonRect = pygame.Rect(97, heightY - 242, 100, 50)
+INVButtonRect = pygame.Rect(219, heightY - 242, 100, 50)
 DATAButtonRect = pygame.Rect(widthX - 62, heightY - 242, 100, 50)
-MAPButtonRect = pygame.Rect(widthX + 71, heightY - 242, 100, 50)
-RADIOButtonRect = pygame.Rect(widthX + 228, heightY - 242, 100, 50)
+MAPButtonRect = pygame.Rect(widthX + 67, heightY - 242, 100, 50)
+RADIOButtonRect = pygame.Rect(widthX + 223, heightY - 242, 100, 50)
 
 t = 0
 statColor = (0, 120, 120)
@@ -210,8 +210,8 @@ while True:
     display.blit(DATAButton, (DATAButtonRect.x, DATAButtonRect.y))
     display.blit(MAPButton, (MAPButtonRect.x, MAPButtonRect.y))
     display.blit(RADIOButton, (RADIOButtonRect.x, RADIOButtonRect.y))
-    display.blit(font.render("    ┌     ┐    ┌    ┐   ┌     ┐     ┌   ┐      ┌     ┐", True, (0, 238, 0)), (24, 0))
-    display.blit(font.render("┌───┘     └────┘    └───┘     └─────┘   └──────┘     └───┐", True, (0, 238, 0)), (24, 24))
+    display.blit(font.render("      ┌     ┐   ┌    ┐   ┌    ┐    ┌    ┐     ┌      ┐", True, (0, 238, 0)), (24, 0))
+    display.blit(font.render("┌─────┘     └───┘    └───┘    └────┘    └─────┘      └───┐", True, (0, 238, 0)), (24, 24))
     display.blit(font.render("██████████▌██████████████████████████████████▌███████████", True, (0, 95, 0)), (34,
                                                                                                               heightY +
                                                                                                               200))
