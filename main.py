@@ -2,6 +2,7 @@ import sys
 from array import array
 
 import pygame
+import spritesheet
 import moderngl
 
 import imageio.v2 as imageio
@@ -33,9 +34,23 @@ pygame.display.set_caption("PipOS")
 pygame.display.set_icon(display)
 ctx = moderngl.create_context()
 
+# Sprite sheet stuff for the Vault Boy
+sprite_sheet_image = pygame.image.load('assets/vault_boy/vault_boy_sequence.png').convert_alpha()
+sprite_sheet = spritesheet.SpriteSheet(sprite_sheet_image)
+
+# Frames for vault boy
+animation_list = []
+animation_steps = 6
+last_update = pygame.time.get_ticks()
+animation_cooldown = 250
+frame = 0
+
+for x in range(animation_steps):
+    animation_list.append(sprite_sheet.get_image(x, 268, 268, 1, (0, 47, 0)))
+
 clock = pygame.time.Clock()
 indexOfTab = 0
-startUpFlicker = True
+startUpFlicker = False
 
 font = pygame.font.Font('fonts/monofonto rg.ttf', 26)
 font_smaller = pygame.font.Font('fonts/monofonto rg.ttf', 24)
@@ -264,6 +279,7 @@ while True:
 
 
     display.fill((0, 0, 0))
+
     # background_scaled = pygame.transform.scale(background, (800, 480))
     # display.blit(background_scaled, (0, 0))
     # display.blit(background_scaled, (0, 0))
@@ -298,6 +314,17 @@ while True:
 
         # Display name
         display.blit(NameLabel, (labelname.x, labelname.y))
+
+        # Update animation
+        current_time = pygame.time.get_ticks()
+        if current_time - last_update >= animation_cooldown:
+            frame += 1
+            last_update = current_time
+            if frame >= len(animation_list):
+                frame = 0
+
+        # Vault boy rendering
+        display.blit(animation_list[frame], (widthX - 168, heightY - 162))
 
     frame_tex = surf_to_texture(display)
     frame_tex.use(0)
