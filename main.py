@@ -4,12 +4,28 @@ from array import array
 import pygame
 import moderngl
 
+import imageio.v2 as imageio
+
 pygame.init()
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 480
 widthX = SCREEN_WIDTH / 2
 heightY = SCREEN_HEIGHT / 2
+selectedTabTop = [
+    [0, "      ┌     ┐                                             "],
+    [1, "                ┌    ┐                                    "],
+    [2, "                         ┌    ┐                           "],
+    [3, "                                   ┌    ┐                 "],
+    [4, "                                              ┌      ┐    "],
+]
+selectedTabBtm = [
+    [0, "┌─────┘     └────────────────────────────────────────────┐"],
+    [1, "┌───────────────┘    └───────────────────────────────────┐"],
+    [2, "┌────────────────────────┘    └──────────────────────────┐"],
+    [3, "┌──────────────────────────────────┘    └────────────────┐"],
+    [4, "┌─────────────────────────────────────────────┘      └───┐"],
+]
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.OPENGL | pygame.DOUBLEBUF)
 display = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -18,6 +34,7 @@ pygame.display.set_icon(display)
 ctx = moderngl.create_context()
 
 clock = pygame.time.Clock()
+indexOfTab = 0
 
 font = pygame.font.Font('fonts/monofonto rg.ttf', 26)
 
@@ -151,15 +168,15 @@ while True:
             sys.exit()
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             if STATButtonRect.collidepoint(event.pos):
-                background = pygame.image.load('assets/base.png').convert_alpha()
+                indexOfTab = 0
             if INVButtonRect.collidepoint(event.pos):
-                background = pygame.image.load('assets/ITEM.png').convert_alpha()
+                indexOfTab = 1
             if DATAButtonRect.collidepoint(event.pos):
-                background = pygame.image.load('assets/minecraft.png').convert_alpha()
+                indexOfTab = 2
             if MAPButtonRect.collidepoint(event.pos):
-                background = pygame.image.load('assets/map.png').convert_alpha()
+                indexOfTab = 3
             if RADIOButtonRect.collidepoint(event.pos):
-                background = pygame.image.load('assets/RADIO.png').convert_alpha()
+                indexOfTab = 4
         if STATButtonRect.collidepoint(pygame.mouse.get_pos()):
             statColor = (0, 255, 255)
         else:
@@ -201,33 +218,29 @@ while True:
     # Rendering code, ANIME DO NOT TOUCH OR I WILL SMITE YOU WITH A FUCKING NUCLEAR BOMB
     t += 1
 
+
+    def get_tab_representation(index, listof):
+        for item in listof:
+            if item[0] == index:
+                return item[1]
+        return None  # Return None if no matching index is found
+
     display.fill((0, 0, 0))
     # background_scaled = pygame.transform.scale(background, (800, 480))
     # display.blit(background_scaled, (0, 0))
+    # display.blit(background_scaled, (0, 0))
+    # pipman = pygame.image.load("assets/vault_boy_gif.gif").convert_alpha()
+    # pipmy = pygame.transform.scale(pipman, (800, 480))
+    # display.blit(pipman, (widthX - 242, heightY))
 
     display.blit(STATButton, (STATButtonRect.x, STATButtonRect.y))
     display.blit(INVButton, (INVButtonRect.x, INVButtonRect.y))
     display.blit(DATAButton, (DATAButtonRect.x, DATAButtonRect.y))
     display.blit(MAPButton, (MAPButtonRect.x, MAPButtonRect.y))
     display.blit(RADIOButton, (RADIOButtonRect.x, RADIOButtonRect.y))
-    display.blit(font.render("      ┌     ┐   ┌    ┐   ┌    ┐    ┌    ┐     ┌      ┐", True, (0, 238, 0)), (24, 0))
-    display.blit(font.render("┌─────┘     └───┘    └───┘    └────┘    └─────┘      └───┐", True, (0, 238, 0)), (24, 24))
+    display.blit(font.render(get_tab_representation(indexOfTab, selectedTabTop), True, (0, 238, 0)), (24, 0))
+    display.blit(font.render(get_tab_representation(indexOfTab, selectedTabBtm), True, (0, 238, 0)), (24, 24))
     display.blit(font.render("██████████▌██████████████████████████████████▌███████████", True, (0, 95, 0)), (34,heightY +200))
-        #display.blit(font.render("      ┌     ┐                                         ", True, (0, 238, 0)), (24, 0))
-        #display.blit(font.render("┌─────┘     └────────────────────────────────────────────┐", True, (0, 238, 0)), (24, 24))
-        #display.blit(font.render("██████████▌██████████████████████████████████▌███████████", True, (0, 95, 0)), (34,heightY +200))
-       # display.blit(font.render("                ┌    ┐                                ", True, (0, 238, 0)), (24, 0))
-       # display.blit(font.render("┌───────────────┘    └───────────────────────────────────┐", True, (0, 238, 0)), (24, 24))
-       # display.blit(font.render("██████████▌██████████████████████████████████▌███████████", True, (0, 95, 0)), (34,heightY +200))
-       # display.blit(font.render("                         ┌    ┐                       ", True, (0, 238, 0)), (24, 0))
-       # display.blit(font.render("┌────────────────────────┘    └──────────────────────────┐", True, (0, 238, 0)), (24, 24))
-       # display.blit(font.render("██████████▌██████████████████████████████████▌███████████", True, (0, 95, 0)), (34,heightY +200))
-       # display.blit(font.render("                                   ┌    ┐             ", True, (0, 238, 0)), (24, 0))
-       # display.blit(font.render("┌──────────────────────────────────┘    └────────────────┐", True, (0, 238, 0)), (24, 24))
-       # display.blit(font.render("██████████▌██████████████████████████████████▌███████████", True, (0, 95, 0)), (34,heightY +200))
-       # display.blit(font.render("                                              ┌      ┐", True, (0, 238, 0)), (24, 0))
-       # display.blit(font.render("┌─────────────────────────────────────────────┘      └───┐", True, (0, 238, 0)), (24, 24))
-       # display.blit(font.render("██████████▌██████████████████████████████████▌███████████", True, (0, 95, 0)), (34,heightY +200))
 
     frame_tex = surf_to_texture(display)
     frame_tex.use(0)
