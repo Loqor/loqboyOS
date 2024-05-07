@@ -35,6 +35,7 @@ ctx = moderngl.create_context()
 
 clock = pygame.time.Clock()
 indexOfTab = 0
+shouldBlip = True
 
 font = pygame.font.Font('fonts/monofonto rg.ttf', 26)
 
@@ -78,6 +79,8 @@ uniform vec2 InSize;
 uniform float time;
 uniform vec3 colorization;
 uniform float brightness;
+uniform bool shuckScreen;
+uniform float timeRunning;
 
 in vec2 texCoord;
 out vec4 fragColor;
@@ -100,10 +103,33 @@ const vec3 Floor = vec3(0.05, 0.05, 0.05);
 const vec3 Power = vec3(0.8, 0.8, 0.8);
 
 void main() {
-    vec2 PinUnitCoord = texCoord * Two.xy - One.xy;
+    vec2 modifiedTexCoord = texCoord;
+    float scanlineScaleFactor = 0.0;
+
+    // Check if shuckScreen is greater than 0 and scroll the screen
+    if (shuckScreen) {
+        float baseSpeed = timeRunning; // Initial speed of the scrolling
+        float scrollSpeed = 0;
+
+        scrollSpeed = min(baseSpeed, 0.44);
+
+        modifiedTexCoord.y += time * scrollSpeed;
+        
+        // Optional: Wrap around the texture coordinate to create a continuous scroll
+        modifiedTexCoord.y = fract(modifiedTexCoord.y);
+
+        // Setting ScanlineScale to -20 when shuckScreen is greater than 0
+        scanlineScaleFactor = 470;
+        
+        if(baseSpeed >= 0.44) {
+            modifiedTexCoord = texCoord;
+        }
+    }
+
+    vec2 PinUnitCoord = modifiedTexCoord * Two.xy - One.xy;
     float PincushionR2 = pow(length(PinUnitCoord), 2.0);
     vec2 CurvatureClipCurve = PinUnitCoord * CurvatureAmount * PincushionR2;
-    vec2 ScreenClipCoord = texCoord;
+    vec2 ScreenClipCoord = modifiedTexCoord;
     ScreenClipCoord -= Half.xy;
     ScreenClipCoord *= One.xy - CurvatureAmount * 0.2;
     ScreenClipCoord += Half.xy;
@@ -116,9 +142,9 @@ void main() {
 
     vec4 InTexel = texture(DiffuseSampler, ScreenClipCoord);
 
-    float InnerSine = texCoord.y * InSize.y * ScanlineScale * 0.25;
+    float InnerSine = modifiedTexCoord.y * InSize.y * (ScanlineScale - scanlineScaleFactor) * 0.25;
     float ScanBrightMod = sin(InnerSine * Pi + (time * 0.12) * InSize.y * 0.25);
-    float ScanBrightness = mix(brightness, (pow(ScanBrightMod * ScanBrightMod, ScanlineHeight) * ScanlineBrightScale + 1.0) * 0.5, ScanlineAmount);
+    float ScanBrightness = brightness * mix(1.0, (pow(ScanBrightMod * ScanBrightMod, ScanlineHeight) * (ScanlineBrightScale + (scanlineScaleFactor / 1000) + 1.0)) * 0.5, ScanlineAmount);
     vec3 ScanlineTexel = InTexel.rgb * ScanBrightness;
 
     vec3 grayscale = vec3(dot(ScanlineTexel, vec3(1, 1, 1)));  // Adjusted grayscale conversion
@@ -166,7 +192,7 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+        if event.type == pygame.MOUSEBUTTONDOWN and not shouldBlip and event.button == 1:
             if STATButtonRect.collidepoint(event.pos):
                 indexOfTab = 0
             if INVButtonRect.collidepoint(event.pos):
@@ -257,7 +283,21 @@ while True:
         255.0 / 255.0,  # Green
         255.0 / 255.0  # Blue
     )
-    program['brightness'] = 1.0  # Brightness value - default value is 1.0
+    brightness = 0
+    if shouldBlip:
+        brightness = ((t * 0.001) / 0.44)
+    else:
+        brightness = 1 # Brightness value - default value is 1.0
+    program['brightness'] = brightness
+    program['shuckScreen'] = shouldBlip
+    timeRunning = 0.0
+    if shouldBlip:
+        timeRunning = t * 0.001
+        if timeRunning > 0.44:
+            shouldBlip = False
+    else:
+        timeRunning = 0
+    program['timeRunning'] = timeRunning
     render_object.render(mode=moderngl.TRIANGLE_STRIP)
 
     pygame.display.flip()
