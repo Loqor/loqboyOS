@@ -38,6 +38,7 @@ indexOfTab = 0
 shouldBlip = False
 
 font = pygame.font.Font('fonts/monofonto rg.ttf', 26)
+font_smaller = pygame.font.Font('fonts/monofonto rg.ttf', 24)
 font_scaled = pygame.font.Font('fonts/monofonto rg.ttf', 22)
 font2 = pygame.font.Font('fonts/RobotoCondensed-Regular.ttf', 26)
 
@@ -176,12 +177,13 @@ MAPButton = pygame.Surface((100, 50), pygame.SRCALPHA)
 RADIOButton = pygame.Surface((100, 50), pygame.SRCALPHA)
 NameLabel = pygame.Surface((286, 26), pygame.SRCALPHA)
 
-STATButtonRect = pygame.Rect(97, heightY - 242, 100, 50)
-INVButtonRect = pygame.Rect(219, heightY - 242, 100, 50)
-DATAButtonRect = pygame.Rect(widthX - 62, heightY - 242, 100, 50)
-MAPButtonRect = pygame.Rect(widthX + 67, heightY - 242, 100, 50)
-RADIOButtonRect = pygame.Rect(widthX + 223, heightY - 242, 100, 50)
-labelname = pygame.Rect((display.get_width() / 2) - (NameLabel.get_width() / 2), display.get_height() / 2 + 150, 286, 26)
+STATButtonRect = pygame.Rect(97, heightY - 244, 100, 50)
+INVButtonRect = pygame.Rect(219, heightY - 244, 100, 50)
+DATAButtonRect = pygame.Rect(widthX - 62, heightY - 244, 100, 50)
+MAPButtonRect = pygame.Rect(widthX + 67, heightY - 244, 100, 50)
+RADIOButtonRect = pygame.Rect(widthX + 223, heightY - 244, 100, 50)
+labelname = pygame.Rect((display.get_width() / 2) - (NameLabel.get_width() / 2), display.get_height() / 2 + 150, 286,
+                        26)
 
 t = 0
 statColor = (0, 120, 120)
@@ -260,6 +262,7 @@ while True:
                 return item[1]
         return None  # Return None if no matching index is found
 
+
     display.fill((0, 0, 0))
     # background_scaled = pygame.transform.scale(background, (800, 480))
     # display.blit(background_scaled, (0, 0))
@@ -268,17 +271,33 @@ while True:
     # pipmy = pygame.transform.scale(pipman, (800, 480))
     # display.blit(pipman, (widthX - 242, heightY))
 
+    # Display each button
     display.blit(STATButton, (STATButtonRect.x, STATButtonRect.y))
     display.blit(INVButton, (INVButtonRect.x, INVButtonRect.y))
     display.blit(DATAButton, (DATAButtonRect.x, DATAButtonRect.y))
     display.blit(MAPButton, (MAPButtonRect.x, MAPButtonRect.y))
     display.blit(RADIOButton, (RADIOButtonRect.x, RADIOButtonRect.y))
-    display.blit(NameLabel, (labelname.x, labelname.y))
-    display.blit(font.render(get_tab_representation(indexOfTab, selectedTabTop), True, (0, 238, 0)), (24, 0))
-    display.blit(font.render(get_tab_representation(indexOfTab, selectedTabBtm), True, (0, 238, 0)), (24, 24))
-    display.blit(       font.render("██████████▌██████████████████████████████████▌███████████", True, (0, 95, 0)), (34,heightY +200))
-    display.blit(font_scaled.render("                        ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀          ", True, (0, 238, 0)), (34,heightY + 209))
-    display.blit(font_scaled.render("HP 380/380    LEVEL 125                                  AP 150/150", True, (0, 238, 0)), (34,heightY +202))
+
+    # Display tab selections
+    display.blit(font.render(get_tab_representation(indexOfTab, selectedTabTop), True, (0, 142, 0)), (24, 0))
+    display.blit(font.render(get_tab_representation(indexOfTab, selectedTabBtm), True, (0, 142, 0)), (24, 24))
+
+    if indexOfTab == 0:
+        # Display different submenus
+        display.blit(font_smaller.render("STATUS", True, (0, 142, 0)), (110, 40))
+        display.blit(font_smaller.render("SPECIAL", True, (0, 95, 0)), (192, 40))
+        display.blit(font_smaller.render("PERKS", True, (0, 47, 0)), (286, 40))
+
+        # Display lower bar of Stats screen
+        display.blit(font.render("██████████▌██████████████████████████████████▌███████████", True, (0, 95, 0)),
+                     (34, heightY + 200))
+        display.blit(font_scaled.render("                        ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀          ", True, (0, 238, 0)),
+                     (34, heightY + 209))
+        display.blit(font_scaled.render("HP 380/380    LEVEL 125                                  AP 150/150", True,
+                                        (0, 238, 0)), (34, heightY + 202))
+
+        # Display name
+        display.blit(NameLabel, (labelname.x, labelname.y))
 
     frame_tex = surf_to_texture(display)
     frame_tex.use(0)
