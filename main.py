@@ -35,7 +35,7 @@ ctx = moderngl.create_context()
 
 clock = pygame.time.Clock()
 indexOfTab = 0
-shouldBlip = True
+shouldBlip = False
 
 font = pygame.font.Font('fonts/monofonto rg.ttf', 26)
 
@@ -267,6 +267,7 @@ while True:
     display.blit(font.render(get_tab_representation(indexOfTab, selectedTabTop), True, (0, 238, 0)), (24, 0))
     display.blit(font.render(get_tab_representation(indexOfTab, selectedTabBtm), True, (0, 238, 0)), (24, 24))
     display.blit(font.render("██████████▌██████████████████████████████████▌███████████", True, (0, 95, 0)), (34,heightY +200))
+    display.blit(font.render("HP:100/100          ANIMECHEEZE LEVEL20         AP:30/30 ", True, (0, 200, 0)), (34,heightY +200))
 
     frame_tex = surf_to_texture(display)
     frame_tex.use(0)
@@ -281,7 +282,7 @@ while True:
     program['colorization'] = (
         0.0 / 255.0,  # Red
         255.0 / 255.0,  # Green
-        255.0 / 255.0  # Blue
+        0.0 / 255.0  # Blue
     )
     brightness = 0
     if shouldBlip:
