@@ -251,7 +251,7 @@ while True:
     perks_rect = perks.get_rect(center=(PERKSButton.get_width() / 2, PERKSButton.get_height() / 2))
 
     # Name
-    name = font2.render("LoqboyOS", True, (0, 238, 0))
+    name = font2.render("Reanu Keeves", True, (0, 238, 0))
     rectOfName = name.get_rect(center=(NameLabel.get_width() / 2, NameLabel.get_height() / 2))
 
     STATButton.blit(stats, statsRect)
@@ -304,6 +304,7 @@ while True:
                      (34, heightY + 209))
         display.blit(font_scaled.render("HP 380/380    LEVEL 125                                  AP 150/150", True,
                                         (0, 238, 0)), (34, heightY + 202))
+        # Display Limb Health Bars
 
         if indexOfSubmenu == 0:
 
