@@ -210,6 +210,7 @@ while True:
     display.blit(DATAButton, (DATAButtonRect.x, DATAButtonRect.y))
     display.blit(MAPButton, (MAPButtonRect.x, MAPButtonRect.y))
     display.blit(RADIOButton, (RADIOButtonRect.x, RADIOButtonRect.y))
+    display.blit(font.render("    ┌     ┐    ┌    ┐   ┌     ┐     ┌   ┐      ┌     ┐", True, (0, 238, 0)), (24, 0))
     display.blit(font.render("┌───┘     └────┘    └───┘     └─────┘   └──────┘     └───┐", True, (0, 238, 0)), (24, 24))
     display.blit(font.render("██████████▌██████████████████████████████████▌███████████", True, (0, 95, 0)), (34,
                                                                                                               heightY +
