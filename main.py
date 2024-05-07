@@ -19,9 +19,9 @@ ctx = moderngl.create_context()
 
 clock = pygame.time.Clock()
 
-font = pygame.font.Font('fonts/monofonto.ttf', 30)
+font = pygame.font.Font('fonts/monofonto rg.ttf', 26)
 
-background = pygame.image.load('assets/cleanv2.png').convert_alpha()
+background = pygame.image.load('assets/base.png').convert_alpha()
 
 quad_buffer = ctx.buffer(data=array('f', [
     # position (x, y), uv co-ords (x, y)
@@ -130,12 +130,11 @@ DATAButton = pygame.Surface((100, 50), pygame.SRCALPHA)
 MAPButton = pygame.Surface((100, 50), pygame.SRCALPHA)
 RADIOButton = pygame.Surface((100, 50), pygame.SRCALPHA)
 
-STATButtonRect = pygame.Rect(widthX - 21, heightY - 242, 100, 50)
-INVButtonRect = pygame.Rect(widthX + 21, heightY - 242, 100, 50)
-DATAButtonRect = pygame.Rect(widthX + 51, heightY - 242, 100, 50)
+STATButtonRect = pygame.Rect(94, heightY - 242, 100, 50)
+INVButtonRect = pygame.Rect(222, heightY - 242, 100, 50)
+DATAButtonRect = pygame.Rect(widthX - 62, heightY - 242, 100, 50)
 MAPButtonRect = pygame.Rect(widthX + 71, heightY - 242, 100, 50)
-RADIOButtonRect = pygame.Rect(widthX + 121, heightY - 242, 100, 50)
-
+RADIOButtonRect = pygame.Rect(widthX + 228, heightY - 242, 100, 50)
 
 t = 0
 statColor = (0, 120, 120)
@@ -152,7 +151,7 @@ while True:
             sys.exit()
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             if STATButtonRect.collidepoint(event.pos):
-                background = pygame.image.load('assets/cleanv2.png').convert_alpha()
+                background = pygame.image.load('assets/base.png').convert_alpha()
             if INVButtonRect.collidepoint(event.pos):
                 background = pygame.image.load('assets/ITEM.png').convert_alpha()
             if DATAButtonRect.collidepoint(event.pos):
@@ -182,7 +181,7 @@ while True:
         else:
             radioColor = (0, 120, 120)
 
-    stats = font.render("STATS", True, statColor)
+    stats = font.render("STAT", True, statColor)
     statsRect = stats.get_rect(center=(STATButton.get_width() / 2, STATButton.get_height() / 2))
     inv = font.render("INV", True, invColor)
     invRect = inv.get_rect(center=(INVButton.get_width() / 2, INVButton.get_height() / 2))
@@ -203,10 +202,18 @@ while True:
     t += 1
 
     display.fill((0, 0, 0))
-    background_scaled = pygame.transform.scale(background, (800, 480))
-    display.blit(background_scaled, (0, 0))
+    # background_scaled = pygame.transform.scale(background, (800, 480))
+    # display.blit(background_scaled, (0, 0))
 
+    display.blit(STATButton, (STATButtonRect.x, STATButtonRect.y))
+    display.blit(INVButton, (INVButtonRect.x, INVButtonRect.y))
+    display.blit(DATAButton, (DATAButtonRect.x, DATAButtonRect.y))
     display.blit(MAPButton, (MAPButtonRect.x, MAPButtonRect.y))
+    display.blit(RADIOButton, (RADIOButtonRect.x, RADIOButtonRect.y))
+    display.blit(font.render("┌───┘     └────┘    └───┘     └─────┘   └──────┘     └───┐", True, (0, 238, 0)), (24, 24))
+    display.blit(font.render("██████████▌██████████████████████████████████▌███████████", True, (0, 95, 0)), (34,
+                                                                                                              heightY +
+                                                                                                              200))
 
     frame_tex = surf_to_texture(display)
     frame_tex.use(0)
@@ -219,9 +226,9 @@ while True:
     program['OutSize'] = (1, -1)
     program['time'] = t
     program['colorization'] = (
-        25.0 / 255.0,  # Red
-        150.0 / 255.0,  # Green
-        255.0 / 255.0  # Blue
+        255.0 / 255.0,  # Red
+        191.0 / 255.0,  # Green
+        0.0 / 255.0  # Blue
     )
     program['brightness'] = 1.0  # Brightness value - default value is 1.0
     render_object.render(mode=moderngl.TRIANGLE_STRIP)
