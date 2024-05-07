@@ -212,9 +212,22 @@ while True:
     display.blit(RADIOButton, (RADIOButtonRect.x, RADIOButtonRect.y))
     display.blit(font.render("      ┌     ┐   ┌    ┐   ┌    ┐    ┌    ┐     ┌      ┐", True, (0, 238, 0)), (24, 0))
     display.blit(font.render("┌─────┘     └───┘    └───┘    └────┘    └─────┘      └───┐", True, (0, 238, 0)), (24, 24))
-    display.blit(font.render("██████████▌██████████████████████████████████▌███████████", True, (0, 95, 0)), (34,
-                                                                                                              heightY +
-                                                                                                              200))
+    display.blit(font.render("██████████▌██████████████████████████████████▌███████████", True, (0, 95, 0)), (34,heightY +200))
+        #display.blit(font.render("      ┌     ┐                                         ", True, (0, 238, 0)), (24, 0))
+        #display.blit(font.render("┌─────┘     └────────────────────────────────────────────┐", True, (0, 238, 0)), (24, 24))
+        #display.blit(font.render("██████████▌██████████████████████████████████▌███████████", True, (0, 95, 0)), (34,heightY +200))
+       # display.blit(font.render("                ┌    ┐                                ", True, (0, 238, 0)), (24, 0))
+       # display.blit(font.render("┌───────────────┘    └───────────────────────────────────┐", True, (0, 238, 0)), (24, 24))
+       # display.blit(font.render("██████████▌██████████████████████████████████▌███████████", True, (0, 95, 0)), (34,heightY +200))
+       # display.blit(font.render("                         ┌    ┐                       ", True, (0, 238, 0)), (24, 0))
+       # display.blit(font.render("┌────────────────────────┘    └──────────────────────────┐", True, (0, 238, 0)), (24, 24))
+       # display.blit(font.render("██████████▌██████████████████████████████████▌███████████", True, (0, 95, 0)), (34,heightY +200))
+       # display.blit(font.render("                                   ┌    ┐             ", True, (0, 238, 0)), (24, 0))
+       # display.blit(font.render("┌──────────────────────────────────┘    └────────────────┐", True, (0, 238, 0)), (24, 24))
+       # display.blit(font.render("██████████▌██████████████████████████████████▌███████████", True, (0, 95, 0)), (34,heightY +200))
+       # display.blit(font.render("                                              ┌      ┐", True, (0, 238, 0)), (24, 0))
+       # display.blit(font.render("┌─────────────────────────────────────────────┘      └───┐", True, (0, 238, 0)), (24, 24))
+       # display.blit(font.render("██████████▌██████████████████████████████████▌███████████", True, (0, 95, 0)), (34,heightY +200))
 
     frame_tex = surf_to_texture(display)
     frame_tex.use(0)
@@ -227,9 +240,9 @@ while True:
     program['OutSize'] = (1, -1)
     program['time'] = t
     program['colorization'] = (
-        255.0 / 255.0,  # Red
-        191.0 / 255.0,  # Green
-        0.0 / 255.0  # Blue
+        0.0 / 255.0,  # Red
+        255.0 / 255.0,  # Green
+        255.0 / 255.0  # Blue
     )
     program['brightness'] = 1.0  # Brightness value - default value is 1.0
     render_object.render(mode=moderngl.TRIANGLE_STRIP)
