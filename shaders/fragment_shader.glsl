@@ -28,21 +28,23 @@ const float ScanlineOffset = 0.0;
 const vec3 Floor = vec3(0.05, 0.05, 0.05);
 const vec3 Power = vec3(0.8, 0.8, 0.8);
 
-const float bloomThreshold = 0.8; // Brightness threshold for bloom
-const float bloomIntensity = 0.03; // Intensity of bloom effect
+const float bloomThreshold = 0.1; // Brightness threshold for bloom
+const float bloomIntensity = 0.04; // Intensity of bloom effect
 const int bloomBlurSize = 1; // Number of samples for bloom blur
 
-vec4 applyBloom(vec2 coord, vec4 baseColor) {
+vec4 applyBloom(vec2 coord, vec4 baseColor, vec3 colorization) {
     vec4 bloomColor = Zero;
     for (int x = -bloomBlurSize; x <= bloomBlurSize; x++) {
         for (int y = -bloomBlurSize; y <= bloomBlurSize; y++) {
-            vec2 sampleCoord = coord + vec2(x, y) * 0.01; // 0.002 controls the spread of the bloom
+            vec2 sampleCoord = coord + vec2(x, y) * 0.01; // Adjust this value to control the spread of the bloom
             vec4 sampleOf = texture(DiffuseSampler, sampleCoord);
             if (sampleOf.r > bloomThreshold || sampleOf.g > bloomThreshold || sampleOf.b > bloomThreshold) {
                 bloomColor += sampleOf * bloomIntensity;
             }
         }
     }
+    // Multiply the bloom color by the colorization vector to tint the bloom effect
+    bloomColor.rgb *= colorization;
     return baseColor + bloomColor;
 }
 
@@ -96,5 +98,5 @@ void main() {
     grayscale = pow(grayscale, Power);  // Gamma correction
 
     vec4 colorOutput = vec4(colorization * grayscale, 1.0);
-    fragColor = applyBloom(ScreenClipCoord, colorOutput);
+    fragColor = applyBloom(ScreenClipCoord, colorOutput, colorization);
 }

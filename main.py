@@ -109,7 +109,7 @@ INVButton = pygame.Surface((100, 26), pygame.SRCALPHA).convert_alpha()
 DATAButton = pygame.Surface((100, 26), pygame.SRCALPHA).convert_alpha()
 MAPButton = pygame.Surface((100, 26), pygame.SRCALPHA).convert_alpha()
 RADIOButton = pygame.Surface((100, 26), pygame.SRCALPHA).convert_alpha()
-NameLabel = pygame.Surface((208, 26), pygame.SRCALPHA).convert_alpha()
+NameLabel = pygame.Surface((800, 26), pygame.SRCALPHA).convert_alpha()
 
 # Stats Screen Specific Buttons
 STATUSButton = pygame.Surface((100, 24), pygame.SRCALPHA).convert_alpha()
@@ -136,10 +136,10 @@ dataColor = (0, 120, 120)
 mapColor = (0, 120, 120)
 radioColor = (0, 120, 120)
 
-selectedColor = (0, 238, 0)
+selectedColor = (174, 174, 174)
 
-statusColor = (0, 142, 0)
-specialColor = (0, 94, 0)
+statusColor = (91, 91, 91)
+specialColor = (50, 50, 50)
 perksColor = (0, 47, 0)
 
 
@@ -183,49 +183,49 @@ while True:
             if STATUSButtonRect.collidepoint(pygame.mouse.get_pos()):
                 indexOfSubmenu = 0
                 translate_submenu_rects(indexOfSubmenu)
-                statusColor = (0, 142, 0)
-                specialColor = (0, 94, 0)
+                statusColor = (91, 91, 91)
+                specialColor = (50, 50, 50)
                 perksColor = (0, 47, 0)
             if SPECIALButtonRect.collidepoint(pygame.mouse.get_pos()):
                 indexOfSubmenu = 1
                 translate_submenu_rects(indexOfSubmenu)
-                statusColor = (0, 94, 0)
-                specialColor = (0, 142, 0)
-                perksColor = (0, 94, 0)
+                statusColor = (50, 50, 50)
+                specialColor = (91, 91, 91)
+                perksColor = (50, 50, 50)
             if PERKSButtonRect.collidepoint(pygame.mouse.get_pos()):
                 indexOfSubmenu = 2
                 translate_submenu_rects(indexOfSubmenu)
                 statusColor = (0, 47, 0)
-                specialColor = (0, 94, 0)
-                perksColor = (0, 142, 0)
+                specialColor = (50, 50, 50)
+                perksColor = (91, 91, 91)
         if STATButtonRect.collidepoint(pygame.mouse.get_pos()):
-            statColor = (0, 238, 0)
+            statColor = (174, 174, 174)
         else:
-            statColor = (0, 142, 0)
+            statColor = (91, 91, 91)
         if INVButtonRect.collidepoint(pygame.mouse.get_pos()):
-            invColor = (0, 238, 0)
+            invColor = (174, 174, 174)
         else:
-            invColor = (0, 142, 0)
+            invColor = (91, 91, 91)
         if DATAButtonRect.collidepoint(pygame.mouse.get_pos()):
-            dataColor = (0, 238, 0)
+            dataColor = (174, 174, 174)
         else:
-            dataColor = (0, 142, 0)
+            dataColor = (91, 91, 91)
         if MAPButtonRect.collidepoint(pygame.mouse.get_pos()):
-            mapColor = (0, 238, 0)
+            mapColor = (174, 174, 174)
         else:
-            mapColor = (0, 142, 0)
+            mapColor = (91, 91, 91)
         if RADIOButtonRect.collidepoint(pygame.mouse.get_pos()):
-            radioColor = (0, 238, 0)
+            radioColor = (174, 174, 174)
         else:
-            radioColor = (0, 142, 0)
+            radioColor = (0, 91, 91)
         if STATUSButtonRect.collidepoint(pygame.mouse.get_pos()):
             statusColor = selectedColor
         else:
-            statusColor = (0, 142, 0)
+            statusColor = (91, 91, 91)
         if SPECIALButtonRect.collidepoint(pygame.mouse.get_pos()):
             specialColor = selectedColor
         else:
-            specialColor = (0, 94, 0)
+            specialColor = (50, 50, 50)
         if PERKSButtonRect.collidepoint(pygame.mouse.get_pos()):
             perksColor = selectedColor
         else:
@@ -251,7 +251,7 @@ while True:
     perks_rect = perks.get_rect(center=(PERKSButton.get_width() / 2, PERKSButton.get_height() / 2))
 
     # Name
-    name = font2.render("Reanu Keeves", True, (0, 238, 0))
+    name = font2.render("Ryan Reynolds", True, (174, 174, 174))
     rectOfName = name.get_rect(center=(NameLabel.get_width() / 2, NameLabel.get_height() / 2))
 
     STATButton.blit(stats, statsRect)
@@ -282,8 +282,8 @@ while True:
     display.blit(RADIOButton, (RADIOButtonRect.x, RADIOButtonRect.y))
 
     # Display tab selections
-    display.blit(font.render(get_tab_representation(indexOfTab, selectedTabTop), True, (0, 142, 0)), (24, 0))
-    display.blit(font.render(get_tab_representation(indexOfTab, selectedTabBtm), True, (0, 142, 0)), (24, 24))
+    display.blit(font.render(get_tab_representation(indexOfTab, selectedTabTop), True, (91, 91, 91)), (24, 0))
+    display.blit(font.render(get_tab_representation(indexOfTab, selectedTabBtm), True, (91, 91, 91)), (24, 24))
 
     if indexOfTab == 0:
 
@@ -298,12 +298,12 @@ while True:
         display.blit(PERKSButton, (PERKSButtonRect.x, PERKSButtonRect.y))
 
         # Display lower bar of Stats screen
-        display.blit(font.render("██████████▌██████████████████████████████████▌███████████", True, (0, 95, 0)),
+        display.blit(font.render("██████████▌██████████████████████████████████▌███████████", True, (50, 50, 50)),
                      (34, heightY + 200))
-        display.blit(font_scaled.render("                        ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀          ", True, (0, 238, 0)),
+        display.blit(font_scaled.render("                        ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀          ", True, (174, 174, 174)),
                      (34, heightY + 209))
         display.blit(font_scaled.render("HP 380/380    LEVEL 125                                  AP 150/150", True,
-                                        (0, 238, 0)), (34, heightY + 202))
+                                        (174, 174, 174)), (34, heightY + 202))
         # Display Limb Health Bars
 
         if indexOfSubmenu == 0:
@@ -323,12 +323,12 @@ while True:
             display.blit(NameLabel, (LabelOfName.x, LabelOfName.y))
 
             bar = "▀▀▀▀▀"
-            display.blit(font_for_bars.render(bar, True, (0, 238, 0)), (400 - 24, heightY - 152))
-            display.blit(font_for_bars.render(bar, True, (0, 238, 0)), (400 - 134, heightY - 70))
-            display.blit(font_for_bars.render(bar, True, (0, 238, 0)), (400 + 84, heightY - 70))
-            display.blit(font_for_bars.render(bar, True, (0, 238, 0)), (400 - 134, heightY + 64))
-            display.blit(font_for_bars.render(bar, True, (0, 238, 0)), (400 + 84, heightY + 64))
-            display.blit(font_for_bars.render(bar, True, (0, 238, 0)), (400 - 24, heightY + 98))
+            display.blit(font_for_bars.render(bar, True, (174, 174, 174)), (400 - 24, heightY - 152))
+            display.blit(font_for_bars.render(bar, True, (174, 174, 174)), (400 - 134, heightY - 70))
+            display.blit(font_for_bars.render(bar, True, (174, 174, 174)), (400 + 84, heightY - 70))
+            display.blit(font_for_bars.render(bar, True, (174, 174, 174)), (400 - 134, heightY + 64))
+            display.blit(font_for_bars.render(bar, True, (174, 174, 174)), (400 + 84, heightY + 64))
+            display.blit(font_for_bars.render(bar, True, (174, 174, 174)), (400 - 24, heightY + 98))
 
     frame_tex = surf_to_texture(display)
     frame_tex.use(0)
