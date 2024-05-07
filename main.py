@@ -43,7 +43,7 @@ animation_cooldown = 250
 frame = 0
 
 for x in range(animation_steps):
-    animation_list.append(sprite_sheet.get_image(x, 268, 268, 1, (0, 47, 0)))
+    animation_list.append(sprite_sheet.get_image(x, 268, 268, 1, (0, 0, 0)))
 
 clock = pygame.time.Clock()
 indexOfTab = 0
@@ -118,6 +118,24 @@ const float ScanlineOffset = 0.0;
 const vec3 Floor = vec3(0.05, 0.05, 0.05);
 const vec3 Power = vec3(0.8, 0.8, 0.8);
 
+const float bloomThreshold = 0.8; // Brightness threshold for bloom
+const float bloomIntensity = 0.03; // Intensity of bloom effect
+const int bloomBlurSize = 1; // Number of samples for bloom blur
+
+vec4 applyBloom(vec2 coord, vec4 baseColor) {
+    vec4 bloomColor = Zero;
+    for (int x = -bloomBlurSize; x <= bloomBlurSize; x++) {
+        for (int y = -bloomBlurSize; y <= bloomBlurSize; y++) {
+            vec2 sampleCoord = coord + vec2(x, y) * 0.01; // 0.002 controls the spread of the bloom
+            vec4 sampleOf = texture(DiffuseSampler, sampleCoord);
+            if (sampleOf.r > bloomThreshold || sampleOf.g > bloomThreshold || sampleOf.b > bloomThreshold) {
+                bloomColor += sampleOf * bloomIntensity;
+            }
+        }
+    }
+    return baseColor + bloomColor;
+}
+
 void main() {
     vec2 modifiedTexCoord = texCoord;
     float scanlineScaleFactor = 0.0;
@@ -166,7 +184,8 @@ void main() {
     vec3 grayscale = vec3(dot(ScanlineTexel, vec3(1, 1, 1)));  // Adjusted grayscale conversion
     grayscale = pow(grayscale, Power);  // Gamma correction
 
-    fragColor = vec4(colorization * grayscale, 1.0);
+    vec4 colorOutput = vec4(colorization * grayscale, 1.0);
+    fragColor = applyBloom(ScreenClipCoord, colorOutput);
 }
 '''
 
@@ -223,25 +242,25 @@ while True:
             if RADIOButtonRect.collidepoint(event.pos):
                 indexOfTab = 4
         if STATButtonRect.collidepoint(pygame.mouse.get_pos()):
-            statColor = (0, 255, 255)
+            statColor = (0, 238, 0)
         else:
-            statColor = (0, 120, 120)
+            statColor = (0, 142, 0)
         if INVButtonRect.collidepoint(pygame.mouse.get_pos()):
-            invColor = (0, 255, 255)
+            invColor = (0, 238, 0)
         else:
-            invColor = (0, 120, 120)
+            invColor = (0, 142, 0)
         if DATAButtonRect.collidepoint(pygame.mouse.get_pos()):
-            dataColor = (0, 255, 255)
+            dataColor = (0, 238, 0)
         else:
-            dataColor = (0, 120, 120)
+            dataColor = (0, 142, 0)
         if MAPButtonRect.collidepoint(pygame.mouse.get_pos()):
-            mapColor = (0, 255, 255)
+            mapColor = (0, 238, 0)
         else:
-            mapColor = (0, 120, 120)
+            mapColor = (0, 142, 0)
         if RADIOButtonRect.collidepoint(pygame.mouse.get_pos()):
-            radioColor = (0, 255, 255)
+            radioColor = (0, 238, 0)
         else:
-            radioColor = (0, 120, 120)
+            radioColor = (0, 142, 0)
 
     stats = font.render("STAT", True, statColor)
     statsRect = stats.get_rect(center=(STATButton.get_width() / 2, STATButton.get_height() / 2))

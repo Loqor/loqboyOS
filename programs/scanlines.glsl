@@ -25,6 +25,20 @@ const vec3 Power = vec3(0.8, 0.8, 0.8);
 
 out vec4 fragColor;
 
+vec4 applyBloom(vec2 coord, vec4 baseColor) {
+    vec4 bloomColor = Zero;
+    for (int x = -bloomBlurSize; x <= bloomBlurSize; x++) {
+        for (int y = -bloomBlurSize; y <= bloomBlurSize; y++) {
+            vec2 sampleCoord = coord + vec2(x, y) * 0.002; // 0.002 controls the spread of the bloom
+            vec4 sampleOf = texture(DiffuseSampler, sampleCoord);
+            if (sampleOf.r > bloomThreshold || sampleOf.g > bloomThreshold || sampleOf.b > bloomThreshold) {
+                bloomColor += sampleOf * bloomIntensity;
+            }
+        }
+    }
+    return baseColor + bloomColor;
+}
+
 void main() {
     vec4 InTexel = texture(DiffuseSampler, texCoord);
 
