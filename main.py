@@ -38,6 +38,8 @@ indexOfTab = 0
 shouldBlip = False
 
 font = pygame.font.Font('fonts/monofonto rg.ttf', 26)
+font_scaled = pygame.font.Font('fonts/monofonto rg.ttf', 22)
+font2 = pygame.font.Font('fonts/RobotoCondensed-Regular.ttf', 26)
 
 background = pygame.image.load('assets/base.png').convert_alpha()
 
@@ -94,7 +96,7 @@ const float Pi = 3.1415926535;
 const float PincushionAmount = 0.02;
 const float CurvatureAmount = 0.02;
 const float ScanlineAmount = 0.8;
-const float ScanlineScale = 480;
+const float ScanlineScale = 560;
 const float ScanlineHeight = 1.0;
 const float ScanlineBrightScale = 1.0;
 const float ScanlineBrightOffset = 0.0;
@@ -172,12 +174,14 @@ INVButton = pygame.Surface((100, 50), pygame.SRCALPHA)
 DATAButton = pygame.Surface((100, 50), pygame.SRCALPHA)
 MAPButton = pygame.Surface((100, 50), pygame.SRCALPHA)
 RADIOButton = pygame.Surface((100, 50), pygame.SRCALPHA)
+NameLabel = pygame.Surface((286, 26), pygame.SRCALPHA)
 
 STATButtonRect = pygame.Rect(97, heightY - 242, 100, 50)
 INVButtonRect = pygame.Rect(219, heightY - 242, 100, 50)
 DATAButtonRect = pygame.Rect(widthX - 62, heightY - 242, 100, 50)
 MAPButtonRect = pygame.Rect(widthX + 67, heightY - 242, 100, 50)
 RADIOButtonRect = pygame.Rect(widthX + 223, heightY - 242, 100, 50)
+labelname = pygame.Rect((display.get_width() / 2) - (NameLabel.get_width() / 2), display.get_height() / 2 + 150, 286, 26)
 
 t = 0
 statColor = (0, 120, 120)
@@ -235,11 +239,16 @@ while True:
     radio = font.render("RADIO", True, radioColor)
     radioRect = radio.get_rect(center=(RADIOButton.get_width() / 2, RADIOButton.get_height() / 2))
 
+    # Name
+    name = font2.render("animecheeze", True, (0, 238, 0))
+    rectOfName = name.get_rect(center=(NameLabel.get_width() / 2, NameLabel.get_height() / 2))
+
     STATButton.blit(stats, statsRect)
     INVButton.blit(inv, invRect)
     DATAButton.blit(data, dataRect)
     MAPButton.blit(maps, mapRect)
     RADIOButton.blit(radio, radioRect)
+    NameLabel.blit(name, rectOfName)
 
     # Rendering code, ANIME DO NOT TOUCH OR I WILL SMITE YOU WITH A FUCKING NUCLEAR BOMB
     t += 1
@@ -264,10 +273,12 @@ while True:
     display.blit(DATAButton, (DATAButtonRect.x, DATAButtonRect.y))
     display.blit(MAPButton, (MAPButtonRect.x, MAPButtonRect.y))
     display.blit(RADIOButton, (RADIOButtonRect.x, RADIOButtonRect.y))
+    display.blit(NameLabel, (labelname.x, labelname.y))
     display.blit(font.render(get_tab_representation(indexOfTab, selectedTabTop), True, (0, 238, 0)), (24, 0))
     display.blit(font.render(get_tab_representation(indexOfTab, selectedTabBtm), True, (0, 238, 0)), (24, 24))
-    display.blit(font.render("██████████▌██████████████████████████████████▌███████████", True, (0, 95, 0)), (34,heightY +200))
-    display.blit(font.render("HP:100/100          ANIMECHEEZE LEVEL20         AP:30/30 ", True, (0, 200, 0)), (34,heightY +200))
+    display.blit(       font.render("██████████▌██████████████████████████████████▌███████████", True, (0, 95, 0)), (34,heightY +200))
+    display.blit(font_scaled.render("                        ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀          ", True, (0, 238, 0)), (34,heightY + 209))
+    display.blit(font_scaled.render("HP 380/380    LEVEL 125                                  AP 150/150", True, (0, 238, 0)), (34,heightY +202))
 
     frame_tex = surf_to_texture(display)
     frame_tex.use(0)
@@ -281,14 +292,14 @@ while True:
     program['time'] = t
     program['colorization'] = (
         0.0 / 255.0,  # Red
-        255.0 / 255.0,  # Green
+        238.0 / 255.0,  # Green
         0.0 / 255.0  # Blue
     )
     brightness = 0
     if shouldBlip:
         brightness = ((t * 0.001) / 0.44)
     else:
-        brightness = 1 # Brightness value - default value is 1.0
+        brightness = 1  # Brightness value - default value is 1.0
     program['brightness'] = brightness
     program['shuckScreen'] = shouldBlip
     timeRunning = 0.0
