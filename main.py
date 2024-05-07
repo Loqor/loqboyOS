@@ -1,11 +1,8 @@
 import sys
 from array import array
-
 import pygame
 import spritesheet
 import moderngl
-
-import imageio.v2 as imageio
 
 pygame.init()
 
@@ -38,7 +35,7 @@ ctx = moderngl.create_context()
 sprite_sheet_image = pygame.image.load('assets/vault_boy/vault_boy_sequence.png').convert_alpha()
 sprite_sheet = spritesheet.SpriteSheet(sprite_sheet_image)
 
-# Frames for vault boy
+# Frames for Vault Boy
 animation_list = []
 animation_steps = 6
 last_update = pygame.time.get_ticks()
@@ -55,6 +52,7 @@ startUpFlicker = True
 font = pygame.font.Font('fonts/monofonto rg.ttf', 26)
 font_smaller = pygame.font.Font('fonts/monofonto rg.ttf', 24)
 font_scaled = pygame.font.Font('fonts/monofonto rg.ttf', 22)
+font_for_bars = pygame.font.Font('fonts/monofonto rg.ttf', 18)
 font2 = pygame.font.Font('fonts/RobotoCondensed-Regular.ttf', 26)
 
 background = pygame.image.load('assets/base.png').convert_alpha()
@@ -197,8 +195,8 @@ INVButtonRect = pygame.Rect(219, heightY - 244, 100, 50)
 DATAButtonRect = pygame.Rect(widthX - 62, heightY - 244, 100, 50)
 MAPButtonRect = pygame.Rect(widthX + 67, heightY - 244, 100, 50)
 RADIOButtonRect = pygame.Rect(widthX + 223, heightY - 244, 100, 50)
-labelname = pygame.Rect((display.get_width() / 2) - (NameLabel.get_width() / 2), display.get_height() / 2 + 150, 286,
-                        26)
+LabelOfName = pygame.Rect((display.get_width() / 2) - (NameLabel.get_width() / 2), display.get_height() / 2 + 150, 286,
+                          26)
 
 t = 0
 statColor = (0, 120, 120)
@@ -299,6 +297,7 @@ while True:
     display.blit(font.render(get_tab_representation(indexOfTab, selectedTabBtm), True, (0, 142, 0)), (24, 24))
 
     if indexOfTab == 0:
+
         # Display different submenus
         display.blit(font_smaller.render("STATUS", True, (0, 142, 0)), (110, 40))
         display.blit(font_smaller.render("SPECIAL", True, (0, 95, 0)), (192, 40))
@@ -313,7 +312,7 @@ while True:
                                         (0, 238, 0)), (34, heightY + 202))
 
         # Display name
-        display.blit(NameLabel, (labelname.x, labelname.y))
+        display.blit(NameLabel, (LabelOfName.x, LabelOfName.y))
 
         # Update animation
         current_time = pygame.time.get_ticks()
@@ -325,6 +324,14 @@ while True:
 
         # Vault boy rendering
         display.blit(animation_list[frame], (widthX - 168, heightY - 162))
+
+        bar = "▀▀▀▀▀"
+        display.blit(font_for_bars.render(bar, True, (0, 238, 0)), (400 - 24, heightY - 152))
+        display.blit(font_for_bars.render(bar, True, (0, 238, 0)), (400 - 134, heightY - 70))
+        display.blit(font_for_bars.render(bar, True, (0, 238, 0)), (400 + 84, heightY - 70))
+        display.blit(font_for_bars.render(bar, True, (0, 238, 0)), (400 - 134, heightY + 64))
+        display.blit(font_for_bars.render(bar, True, (0, 238, 0)), (400 + 84, heightY + 64))
+        display.blit(font_for_bars.render(bar, True, (0, 238, 0)), (400 - 24, heightY + 98))
 
     frame_tex = surf_to_texture(display)
     frame_tex.use(0)
