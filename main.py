@@ -355,9 +355,9 @@ while True:
     )
     brightness = 0
     if startUpFlicker:
-        brightness = ((t * 0.002) / 0.35)
+        brightness = ((t * 0.002) / 0.28)
     else:
-        brightness = 1.25  # Brightness value - default value is 1.0
+        brightness = 1  # Brightness value - default value is 1.0
     program['brightness'] = brightness
     program['shuckScreen'] = startUpFlicker
     timeRunning = 0.0
