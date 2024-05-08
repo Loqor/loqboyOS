@@ -16,4 +16,4 @@ to learn python to make an entire system OS based around a language you don't ev
 - Ice Blue: (0, 255, 255)
 - Red: (255, 0, 0)
 - Blue: (0, 0, 255)
-- Orange: (210, 210, 0)
+- Gold: (210, 210, 0)

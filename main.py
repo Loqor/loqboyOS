@@ -130,11 +130,11 @@ LabelOfName = pygame.Rect((display.get_width() / 2) - (NameLabel.get_width() / 2
                           26)
 
 t = 0
-statColor = (0, 120, 120)
-invColor = (0, 120, 120)
-dataColor = (0, 120, 120)
-mapColor = (0, 120, 120)
-radioColor = (0, 120, 120)
+statColor = (120, 120, 120)
+invColor = (120, 120, 120)
+dataColor = (120, 120, 120)
+mapColor = (120, 120, 120)
+radioColor = (120, 120, 120)
 
 selectedColor = (174, 174, 174)
 
@@ -217,7 +217,7 @@ while True:
         if RADIOButtonRect.collidepoint(pygame.mouse.get_pos()):
             radioColor = (174, 174, 174)
         else:
-            radioColor = (0, 91, 91)
+            radioColor = (91, 91, 91)
         if STATUSButtonRect.collidepoint(pygame.mouse.get_pos()):
             statusColor = selectedColor
         else:
@@ -251,7 +251,7 @@ while True:
     perks_rect = perks.get_rect(center=(PERKSButton.get_width() / 2, PERKSButton.get_height() / 2))
 
     # Name
-    name = font2.render("Ryan Reynolds", True, (174, 174, 174))
+    name = font2.render("Reanu Keeves", True, (174, 174, 174))
     rectOfName = name.get_rect(center=(NameLabel.get_width() / 2, NameLabel.get_height() / 2))
 
     STATButton.blit(stats, statsRect)
@@ -265,8 +265,8 @@ while True:
     t += 1
 
 
-    def get_tab_representation(index, listof):
-        for item in listof:
+    def get_tab_representation(index, tablist):
+        for item in tablist:
             if item[0] == index:
                 return item[1]
         return None  # Return None if no matching index is found
@@ -300,8 +300,9 @@ while True:
         # Display lower bar of Stats screen
         display.blit(font.render("██████████▌██████████████████████████████████▌███████████", True, (50, 50, 50)),
                      (34, heightY + 200))
-        display.blit(font_scaled.render("                        ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀          ", True, (174, 174, 174)),
-                     (34, heightY + 209))
+        display.blit(
+            font_scaled.render("                        ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀          ", True, (174, 174, 174)),
+            (34, heightY + 209))
         display.blit(font_scaled.render("HP 380/380    LEVEL 125                                  AP 150/150", True,
                                         (174, 174, 174)), (34, heightY + 202))
         # Display Limb Health Bars
@@ -323,12 +324,17 @@ while True:
             display.blit(NameLabel, (LabelOfName.x, LabelOfName.y))
 
             bar = "▀▀▀▀▀"
-            display.blit(font_for_bars.render(bar, True, (174, 174, 174)), (400 - 24, heightY - 152))
-            display.blit(font_for_bars.render(bar, True, (174, 174, 174)), (400 - 134, heightY - 70))
-            display.blit(font_for_bars.render(bar, True, (174, 174, 174)), (400 + 84, heightY - 70))
-            display.blit(font_for_bars.render(bar, True, (174, 174, 174)), (400 - 134, heightY + 64))
-            display.blit(font_for_bars.render(bar, True, (174, 174, 174)), (400 + 84, heightY + 64))
-            display.blit(font_for_bars.render(bar, True, (174, 174, 174)), (400 - 24, heightY + 98))
+
+            for i in range(6):
+                values = [
+                    (400 - 24, heightY - 152),
+                    (400 - 134, heightY - 70),
+                    (400 + 84, heightY - 70),
+                    (400 - 134, heightY + 64),
+                    (400 + 84, heightY + 64),
+                    (400 - 24, heightY + 98),
+                ]
+                display.blit(font_for_bars.render(bar, True, (174, 174, 174)), values[i])
 
     frame_tex = surf_to_texture(display)
     frame_tex.use(0)
