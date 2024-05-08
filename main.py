@@ -1,3 +1,4 @@
+
 import sys
 import pygame
 import moderngl
@@ -140,7 +141,7 @@ selectedColor = (174, 174, 174)
 
 statusColor = (91, 91, 91)
 specialColor = (50, 50, 50)
-perksColor = (0, 47, 0)
+perksColor = (10, 10, 10)
 
 
 def translate_submenu_rects(index):
@@ -185,7 +186,7 @@ while True:
                 translate_submenu_rects(indexOfSubmenu)
                 statusColor = (91, 91, 91)
                 specialColor = (50, 50, 50)
-                perksColor = (0, 47, 0)
+                perksColor = (10, 10, 10)
             if SPECIALButtonRect.collidepoint(pygame.mouse.get_pos()):
                 indexOfSubmenu = 1
                 translate_submenu_rects(indexOfSubmenu)
@@ -195,7 +196,7 @@ while True:
             if PERKSButtonRect.collidepoint(pygame.mouse.get_pos()):
                 indexOfSubmenu = 2
                 translate_submenu_rects(indexOfSubmenu)
-                statusColor = (0, 47, 0)
+                statusColor = (10, 10, 10)
                 specialColor = (50, 50, 50)
                 perksColor = (91, 91, 91)
         if STATButtonRect.collidepoint(pygame.mouse.get_pos()):
@@ -229,7 +230,7 @@ while True:
         if PERKSButtonRect.collidepoint(pygame.mouse.get_pos()):
             perksColor = selectedColor
         else:
-            perksColor = (0, 47, 0)
+            perksColor = (10, 10, 10)
 
     stats = font.render("STAT", True, statColor)
     statsRect = stats.get_rect(center=(STATButton.get_width() / 2, STATButton.get_height() / 2))
