@@ -37,7 +37,7 @@ pygame.display.set_caption("PipOS")
 pygame.display.set_icon(display)
 
 # Flicker start up, self-evident by the name. make this 'False' if you don't want it to appear on startup
-startUpFlicker = True
+startUpFlicker = False
 
 # ModernGL context, it's for the actual rendering
 ctx = moderngl.create_context()
@@ -336,6 +336,17 @@ while True:
                     (400 - 24, heightY + 98),
                 ]
                 display.blit(font_for_bars.render(bar, True, (174, 174, 174)), values[i])
+
+        if indexOfSubmenu == 1:
+
+        # i dont even know probably the special screen
+            display.blit(font.render("Strength                 2", True, (91, 91, 91)), (53, heightY - 120))
+            display.blit(font.render("Perception               5", True, (91, 91, 91)), (53, heightY - 80))
+            display.blit(font.render("Endurance                5", True, (91, 91, 91)), (53, heightY - 40))
+            display.blit(font.render("Charisma                10", True, (91, 91, 91)), (53, heightY + 0))
+            display.blit(font.render("Intelligence            10", True, (91, 91, 91)), (53, heightY + 40))
+            display.blit(font.render("Agility                 6", True, (91, 91, 91)), (53, heightY + 80))
+            display.blit(font.render("Luck                    15", True, (91, 91, 91)), (53, heightY + 120))
 
     frame_tex = surf_to_texture(display)
     frame_tex.use(0)
