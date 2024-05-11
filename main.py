@@ -144,24 +144,32 @@ specialColor = (50, 50, 50)
 perksColor = (10, 10, 10)
 
 
+lerp_speed = t * 0.2  # Higher values make the transition faster
+
+def lerp(a, b, t):
+    return a + (b - a) * t
+
 def translate_submenu_rects(index):
+    global STATUSButtonRect, SPECIALButtonRect, PERKSButtonRect
+
     if index == 0:
-        # Position
-        STATUSButtonRect.x = defaultStatusPos[0]
-        SPECIALButtonRect.x = defaultSpecialPos[0]
-        PERKSButtonRect.x = defaultPerksPos[0]
+        # Transition to Stats
+        STATUSButtonRect.x = lerp(STATUSButtonRect.x, defaultStatusPos[0], lerp_speed)
+        SPECIALButtonRect.x = lerp(SPECIALButtonRect.x, defaultSpecialPos[0], lerp_speed)
+        PERKSButtonRect.x = lerp(PERKSButtonRect.x, defaultPerksPos[0], lerp_speed)
 
-    if index == 1:
-        # Position
-        STATUSButtonRect.x = defaultStatusPos[0] - defaultStatusPos[0]
-        SPECIALButtonRect.x = defaultSpecialPos[0] - defaultStatusPos[0]
-        PERKSButtonRect.x = defaultPerksPos[0] - defaultStatusPos[0]
+    elif index == 1:
+        # Transition to Special
+        STATUSButtonRect.x = lerp(STATUSButtonRect.x, defaultStatusPos[0] - (defaultSpecialPos[0] - defaultStatusPos[0]), lerp_speed)
+        SPECIALButtonRect.x = lerp(SPECIALButtonRect.x, defaultSpecialPos[0], lerp_speed)
+        PERKSButtonRect.x = lerp(PERKSButtonRect.x, defaultPerksPos[0] + (defaultStatusPos[0] - defaultSpecialPos[0]), lerp_speed)
 
-    if index == 2:
-        # Position
-        STATUSButtonRect.x = defaultStatusPos[0] - defaultSpecialPos[0]
-        SPECIALButtonRect.x = defaultSpecialPos[0] - defaultSpecialPos[0]
-        PERKSButtonRect.x = defaultPerksPos[0] - defaultSpecialPos[0]
+    elif index == 2:
+        # Transition to Perks
+        STATUSButtonRect.x = lerp(STATUSButtonRect.x, defaultStatusPos[0] - (defaultPerksPos[0] - defaultStatusPos[0]), lerp_speed)
+        SPECIALButtonRect.x = lerp(SPECIALButtonRect.x, defaultSpecialPos[0] - (defaultPerksPos[0] - defaultSpecialPos[0]), lerp_speed)
+        PERKSButtonRect.x = lerp(PERKSButtonRect.x, defaultPerksPos[0], lerp_speed)
+
 
 
 while True:
@@ -340,13 +348,16 @@ while True:
         if indexOfSubmenu == 1:
 
         # special screen
-            display.blit(font.render("Strength                 2", True, (91, 91, 91)), (53, heightY - 120))
-            display.blit(font.render("Perception               5", True, (91, 91, 91)), (53, heightY - 80))
-            display.blit(font.render("Endurance                5", True, (91, 91, 91)), (53, heightY - 40))
-            display.blit(font.render("Charisma                10", True, (91, 91, 91)), (53, heightY + 0))
-            display.blit(font.render("Intelligence            10", True, (91, 91, 91)), (53, heightY + 40))
-            display.blit(font.render("Agility                  6", True, (91, 91, 91)), (53, heightY + 80))
-            display.blit(font.render("Luck                    15", True, (91, 91, 91)), (53, heightY + 120))
+            display.blit(font.render("██████████████████████████", True, (91, 91, 91)), (53, heightY - 120))
+            display.blit(font.render(" Strength               2", True, (0, 0, 0)), (53, heightY - 120))
+            display.blit(font.render(" Perception             5", True, (91, 91, 91)), (53, heightY - 80))
+            display.blit(font.render(" Endurance              5", True, (91, 91, 91)), (53, heightY - 40))
+            display.blit(font.render(" Charisma              10", True, (91, 91, 91)), (53, heightY - 0))
+            display.blit(font.render(" Intelligence          10", True, (91, 91, 91)), (53, heightY + 40))
+            display.blit(font.render(" Agility                6", True, (91, 91, 91)), (53, heightY + 80))
+            display.blit(font.render(" Luck                  15", True, (91, 91, 91)), (53, heightY + 120))
+
+
 
         if indexOfSubmenu == 2:
             # perks screen
