@@ -339,15 +339,21 @@ while True:
 
         if indexOfSubmenu == 1:
 
-        # i dont even know probably the special screen
+        # special screen
             display.blit(font.render("Strength                 2", True, (91, 91, 91)), (53, heightY - 120))
             display.blit(font.render("Perception               5", True, (91, 91, 91)), (53, heightY - 80))
             display.blit(font.render("Endurance                5", True, (91, 91, 91)), (53, heightY - 40))
             display.blit(font.render("Charisma                10", True, (91, 91, 91)), (53, heightY + 0))
             display.blit(font.render("Intelligence            10", True, (91, 91, 91)), (53, heightY + 40))
-            display.blit(font.render("Agility                 6", True, (91, 91, 91)), (53, heightY + 80))
+            display.blit(font.render("Agility                  6", True, (91, 91, 91)), (53, heightY + 80))
             display.blit(font.render("Luck                    15", True, (91, 91, 91)), (53, heightY + 120))
 
+        if indexOfSubmenu == 2:
+            # perks screen
+            display.blit(font.render("████████████████████████████", True, (91, 91, 91)), (53, heightY - 120))
+            display.blit(font.render(" This perk is temporary lol", True, (0, 0, 0)), (53, heightY - 120))
+            display.blit(font.render(" This perk is temporary lol", True, (91, 91, 91)), (53, heightY - 80))
+            display.blit(font.render(" This perk is temporary lol", True, (91, 91, 91)), (53, heightY - 40))
     frame_tex = surf_to_texture(display)
     frame_tex.use(0)
 
