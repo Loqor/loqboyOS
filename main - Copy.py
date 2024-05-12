@@ -67,9 +67,16 @@ for x in range(animation_steps):
 defaultStatusPos = (100, 40)
 defaultSpecialPos = (196, 40)
 defaultPerksPos = (300, 40)
+defaultWeaponsPos = (100, 40)
+defaultArmorPos = (196, 40)
+defaultAidPos = (100, 40)
+
 statusPos = defaultStatusPos
 specialPos = defaultSpecialPos
 perksPos = defaultPerksPos
+weaponsPos = defaultWeaponsPos
+armorPos = defaultArmorPos
+aidPos = defaultAidPos
 
 font = pygame.font.Font('fonts/monofonto rg.ttf', 26)
 font_smaller = pygame.font.Font('fonts/monofonto rg.ttf', 24)
@@ -122,6 +129,16 @@ STATUSButtonRect = pygame.Rect(statusPos[0], statusPos[1], 100, 50)  # 110 40 10
 SPECIALButtonRect = pygame.Rect(specialPos[0], specialPos[1], 100, 50)  # 192 40 100 50
 PERKSButtonRect = pygame.Rect(perksPos[0], perksPos[1], 100, 50)  # 286 40 100 50
 
+# Inv Screen Specific Buttons
+WEAPONSButton = pygame.Surface((100, 24), pygame.SRCALPHA).convert_alpha()
+ARMORButton = pygame.Surface((100, 24), pygame.SRCALPHA).convert_alpha()
+AIDButton = pygame.Surface((60, 24), pygame.SRCALPHA).convert_alpha()
+
+# Inv Screen Specific Rectangles
+WEAPONSButtonRect = pygame.Rect(statusPos[0], statusPos[1], 100, 50)  # 110 40 100 50
+ARMORButtonRect = pygame.Rect(specialPos[0], specialPos[1], 100, 50)  # 192 40 100 50
+AIDButtonRect = pygame.Rect(perksPos[0], perksPos[1], 100, 50)  # 286 40 100 50
+
 STATButtonRect = pygame.Rect(97, heightY - 234, 100, 26)
 INVButtonRect = pygame.Rect(219, heightY - 234, 100, 26)
 DATAButtonRect = pygame.Rect(widthX - 62, heightY - 234, 100, 26)
@@ -143,6 +160,9 @@ selectedColor = (174, 174, 174)
 statusColor = (91, 91, 91)
 specialColor = (50, 50, 50)
 perksColor = (10, 10, 10)
+weaponColor = (91, 91, 91)
+armorColor = (50, 50, 50)
+aidColor = (10, 10, 10)
 
 lerp_speed = t * 0.2  # Higher values make the transition faster
 
@@ -172,6 +192,22 @@ def translate_submenu_rects(index):
         SPECIALButtonRect.x = lerp(SPECIALButtonRect.x, defaultSpecialPos[0] - (defaultPerksPos[0] - defaultSpecialPos[0]), lerp_speed)
         PERKSButtonRect.x = lerp(PERKSButtonRect.x, defaultPerksPos[0], lerp_speed)
 
+    elif index == 3:
+        # transition to Weapons
+        WEAPONSButtonRect.x = lerp(WEAPONSButtonRect.x, defaultWeaponsPos[0], lerp_speed)
+        ARMORButtonRect.x = lerp(ARMORButtonRect.x, defaultArmorPos[0], lerp_speed)
+        AIDButtonRect.x = lerp(AIDButtonRect.x, defaultAidPos[0], lerp_speed)
+
+    elif index == 4:
+        # transition to Armor
+        WEAPONSButtonRect.x =lerp(WEAPONSButtonRect.x, defaultWeaponsPos[0] - (defaultPerksPos[0] - defaultWeaponsPos[0]), lerp_speed)
+        SPECIALButtonRect.x = lerp(ARMORButtonRect.x, defaultArmorPos[0], lerp_speed)
+        AIDButtonRect.x = lerp(AIDButtonRect.x, defaultAidPos[0] + (defaultWeaponsPos[0] - defaultArmorPos[0]), lerp_speed)
+    elif index == 2:
+        # Transition to AID
+        WEAPONSButtonRect.x = lerp(WEAPONSButtonRect.x, defaultWeaponsPos[0] - (defaultAidPos[0] - defaultWeaponsPos[0]), lerp_speed)
+        ARMORButtonRect.x = lerp(ARMORButtonRect.x, defaultArmorPos[0] - (defaultAidPos[0] - defaultArmorPos[0]), lerp_speed)
+        AIDButtonRect.x = lerp(AIDButtonRect.x, defaultAidPos[0], lerp_speed)
 
 while True:
 
@@ -200,6 +236,34 @@ while True:
                 statusColor = (10, 10, 10)
                 specialColor = (50, 50, 50)
                 perksColor = (91, 91, 91)
+
+            if INVButtonRect.collidepoint(event.pos):
+                indexOfTab = 1
+            if WEAPONSButtonRect.collidepoint(pygame.mouse.get_pos()):
+                indexOfSubmenu = 3
+                translate_submenu_rects(indexOfSubmenu)
+                weaponColor = (91, 91, 91)
+                armorColor = (50, 50, 50)
+                aidColor = (10, 10, 10)
+            if ARMORButtonRect.collidepoint(pygame.mouse.get_pos()):
+                indexOfSubmenu = 4
+                translate_submenu_rects(indexOfSubmenu)
+                weaponColor = (50, 50, 50)
+                armorColor = (91, 91, 91)
+                aidColor = (50, 50, 50)
+            if AIDButtonRect.collidepoint(pygame.mouse.get_pos()):
+                indexOfSubmenu = 5
+                translate_submenu_rects(indexOfSubmenu)
+                weaponColor = (10, 10, 10)
+                armorColor = (50, 50, 50)
+                aidColor = (91, 91, 91)
+            if DATAButtonRect.collidepoint(event.pos):
+                indexOfTab = 2
+            if MAPButtonRect.collidepoint(event.pos):
+                indexOfTab = 3
+            if RADIOButtonRect.collidepoint(event.pos):
+                indexOfTab = 4
+
         if STATButtonRect.collidepoint(pygame.mouse.get_pos()):
             statColor = (174, 174, 174)
         else:
@@ -250,6 +314,14 @@ while True:
     special = font_smaller.render("SPECIAL", True, specialColor)
     special_rect = special.get_rect(center=(SPECIALButton.get_width() / 2, SPECIALButton.get_height() / 2))
     perks = font_smaller.render("PERKS", True, perksColor)
+    perks_rect = perks.get_rect(center=(PERKSButton.get_width() / 2, PERKSButton.get_height() / 2))
+
+    # Submenus for Inv
+    weapon = font_smaller.render("WEAPONS", True, weaponColor)
+    weapon_rect = weapon.get_rect(center=(WEAPONSButton.get_width() / 2, WEAPONSButton.get_height() / 2))
+    special = font_smaller.render("ARMOR", True, armorColor)
+    special_rect = special.get_rect(center=(SPECIALButton.get_width() / 2, SPECIALButton.get_height() / 2))
+    perks = font_smaller.render("AID", True, perksColor)
     perks_rect = perks.get_rect(center=(PERKSButton.get_width() / 2, PERKSButton.get_height() / 2))
 
     # Name
