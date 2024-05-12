@@ -1,4 +1,3 @@
-
 import sys
 import pygame
 import moderngl
@@ -111,6 +110,7 @@ DATAButton = pygame.Surface((100, 26), pygame.SRCALPHA).convert_alpha()
 MAPButton = pygame.Surface((100, 26), pygame.SRCALPHA).convert_alpha()
 RADIOButton = pygame.Surface((100, 26), pygame.SRCALPHA).convert_alpha()
 NameLabel = pygame.Surface((800, 26), pygame.SRCALPHA).convert_alpha()
+HighlightedTextButton = pygame.Surface((338, 32), pygame.SRCALPHA).convert_alpha()
 
 # Stats Screen Specific Buttons
 STATUSButton = pygame.Surface((100, 24), pygame.SRCALPHA).convert_alpha()
@@ -129,6 +129,7 @@ MAPButtonRect = pygame.Rect(widthX + 67, heightY - 234, 100, 26)
 RADIOButtonRect = pygame.Rect(widthX + 223, heightY - 234, 100, 26)
 LabelOfName = pygame.Rect((display.get_width() / 2) - (NameLabel.get_width() / 2), display.get_height() / 2 + 150, 286,
                           26)
+HighlightedTextRect = pygame.Rect(53, heightY - 120, 338, 32)
 
 t = 0
 statColor = (120, 120, 120)
@@ -143,11 +144,12 @@ statusColor = (91, 91, 91)
 specialColor = (50, 50, 50)
 perksColor = (10, 10, 10)
 
-
 lerp_speed = t * 0.2  # Higher values make the transition faster
+
 
 def lerp(a, b, t):
     return a + (b - a) * t
+
 
 def translate_submenu_rects(index):
     global STATUSButtonRect, SPECIALButtonRect, PERKSButtonRect
@@ -160,16 +162,19 @@ def translate_submenu_rects(index):
 
     elif index == 1:
         # Transition to Special
-        STATUSButtonRect.x = lerp(STATUSButtonRect.x, defaultStatusPos[0] - (defaultSpecialPos[0] - defaultStatusPos[0]), lerp_speed)
+        STATUSButtonRect.x = lerp(STATUSButtonRect.x,
+                                  defaultStatusPos[0] - (defaultSpecialPos[0] - defaultStatusPos[0]), lerp_speed)
         SPECIALButtonRect.x = lerp(SPECIALButtonRect.x, defaultSpecialPos[0], lerp_speed)
-        PERKSButtonRect.x = lerp(PERKSButtonRect.x, defaultPerksPos[0] + (defaultStatusPos[0] - defaultSpecialPos[0]), lerp_speed)
+        PERKSButtonRect.x = lerp(PERKSButtonRect.x, defaultPerksPos[0] + (defaultStatusPos[0] - defaultSpecialPos[0]),
+                                 lerp_speed)
 
     elif index == 2:
         # Transition to Perks
-        STATUSButtonRect.x = lerp(STATUSButtonRect.x, defaultStatusPos[0] - (defaultPerksPos[0] - defaultStatusPos[0]), lerp_speed)
-        SPECIALButtonRect.x = lerp(SPECIALButtonRect.x, defaultSpecialPos[0] - (defaultPerksPos[0] - defaultSpecialPos[0]), lerp_speed)
+        STATUSButtonRect.x = lerp(STATUSButtonRect.x, defaultStatusPos[0] - (defaultPerksPos[0] - defaultStatusPos[0]),
+                                  lerp_speed)
+        SPECIALButtonRect.x = lerp(SPECIALButtonRect.x,
+                                   defaultSpecialPos[0] - (defaultPerksPos[0] - defaultSpecialPos[0]), lerp_speed)
         PERKSButtonRect.x = lerp(PERKSButtonRect.x, defaultPerksPos[0], lerp_speed)
-
 
 
 while True:
@@ -260,7 +265,7 @@ while True:
     perks_rect = perks.get_rect(center=(PERKSButton.get_width() / 2, PERKSButton.get_height() / 2))
 
     # Name
-    name = font2.render("Reanu Keeves", True, (174, 174, 174))
+    name = font2.render("Loqor", True, (174, 174, 174))
     rectOfName = name.get_rect(center=(NameLabel.get_width() / 2, NameLabel.get_height() / 2))
 
     STATButton.blit(stats, statsRect)
@@ -269,7 +274,6 @@ while True:
     MAPButton.blit(maps, mapRect)
     RADIOButton.blit(radio, radioRect)
     NameLabel.blit(name, rectOfName)
-
     # Rendering code, ANIME DO NOT TOUCH OR I WILL SMITE YOU WITH A FUCKING NUCLEAR BOMB
     t += 1
 
@@ -345,26 +349,90 @@ while True:
                 ]
                 display.blit(font_for_bars.render(bar, True, (174, 174, 174)), values[i])
 
+        SpecialStuff = [
+            " Strength               2",
+            " Perception             5",
+            " Endurance              5",
+            " Charisma              10",
+            " Intelligence          10",
+            " Agility                6",
+            " Luck                  15"
+        ]
+
+        PerksStuff = [
+            " Bloody Mess             ",
+            " Mysterious Stranger     ",
+            " Strong Back             ",
+            " Animal Friend           ",
+            " Armorer                 ",
+            " Gunsmith                ",
+            " Anime Fiend             "
+        ]
+
         if indexOfSubmenu == 1:
-
-        # special screen
             display.blit(font.render("██████████████████████████", True, (91, 91, 91)), (53, heightY - 120))
-            display.blit(font.render(" Strength               2", True, (0, 0, 0)), (53, heightY - 120))
-            display.blit(font.render(" Perception             5", True, (91, 91, 91)), (53, heightY - 80))
-            display.blit(font.render(" Endurance              5", True, (91, 91, 91)), (53, heightY - 40))
-            display.blit(font.render(" Charisma              10", True, (91, 91, 91)), (53, heightY - 0))
-            display.blit(font.render(" Intelligence          10", True, (91, 91, 91)), (53, heightY + 40))
-            display.blit(font.render(" Agility                6", True, (91, 91, 91)), (53, heightY + 80))
-            display.blit(font.render(" Luck                  15", True, (91, 91, 91)), (53, heightY + 120))
 
+            for i, attribute in enumerate(SpecialStuff):
+                # Calculate the y position for this attribute
+                attribute_y_position = HighlightedTextRect.y + (i * 40)
+                button_rect = pygame.Rect(HighlightedTextRect.x, attribute_y_position, HighlightedTextRect.width,
+                                          HighlightedTextRect.height)
 
+                # Determine if the mouse is over the button
+                if button_rect.collidepoint(pygame.mouse.get_pos()):
+                    text_color = (0, 0, 0)
+                    background_color = (91, 91, 91)
+                else:
+                    text_color = (91, 91, 91)
+                    background_color = (0, 0, 0)
+
+                # Render the text with the appropriate colors
+                text = font.render(attribute, True, text_color)
+                text_rect = text.get_rect()
+                text_rect.center = (button_rect.width / 2, button_rect.height / 2)
+
+                # Fill the button surface with the background color
+                HighlightedTextButton = pygame.Surface((button_rect.width, button_rect.height))
+                HighlightedTextButton.fill(background_color)
+
+                # Blit the text onto the button surface
+                HighlightedTextButton.blit(text, text_rect)
+
+                # Blit the entire button surface to the display at the correct position
+                display.blit(HighlightedTextButton, button_rect.topleft)
 
         if indexOfSubmenu == 2:
             # perks screen
-            display.blit(font.render("████████████████████████████", True, (91, 91, 91)), (53, heightY - 120))
-            display.blit(font.render(" This perk is temporary lol", True, (0, 0, 0)), (53, heightY - 120))
-            display.blit(font.render(" This perk is temporary lol", True, (91, 91, 91)), (53, heightY - 80))
-            display.blit(font.render(" This perk is temporary lol", True, (91, 91, 91)), (53, heightY - 40))
+            display.blit(font.render("██████████████████████████", True, (91, 91, 91)), (53, heightY - 120))
+
+            for i, attribute in enumerate(PerksStuff):
+                # Calculate the y position for this attribute
+                attribute_y_position = HighlightedTextRect.y + (i * 40)
+                button_rect = pygame.Rect(HighlightedTextRect.x, attribute_y_position, HighlightedTextRect.width,
+                                          HighlightedTextRect.height)
+
+                # Determine if the mouse is over the button
+                if button_rect.collidepoint(pygame.mouse.get_pos()):
+                    text_color = (0, 0, 0)
+                    background_color = (91, 91, 91)
+                else:
+                    text_color = (91, 91, 91)
+                    background_color = (0, 0, 0)
+
+                # Render the text with the appropriate colors
+                text = font.render(attribute, True, text_color)
+                text_rect = text.get_rect()
+                text_rect.center = (button_rect.width / 2, button_rect.height / 2)
+
+                # Fill the button surface with the background color
+                HighlightedTextButton = pygame.Surface((button_rect.width, button_rect.height))
+                HighlightedTextButton.fill(background_color)
+
+                # Blit the text onto the button surface
+                HighlightedTextButton.blit(text, text_rect)
+
+                # Blit the entire button surface to the display at the correct position
+                display.blit(HighlightedTextButton, button_rect.topleft)
     frame_tex = surf_to_texture(display)
     frame_tex.use(0)
 
