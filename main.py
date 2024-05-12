@@ -56,12 +56,12 @@ sprite_sheet = spritesheet.SpriteSheet(sprite_sheet_image)
 animation_list = []
 animation_steps = 6
 last_update = pygame.time.get_ticks()
-animation_cooldown = 250
+animation_cooldown = 200
 frame = 0
 
 # For loop iterating through the animations
 for x in range(animation_steps):
-    animation_list.append(sprite_sheet.get_image(x, 268, 268, 1, (0, 0, 0)))
+    animation_list.append(sprite_sheet.get_image(x, 268, 268, 1, (255, 255, 255)))
 
 # For the submenus. @TODO I REFUSE TO ORGANIZE I'LL DO IT LATER
 defaultStatusPos = (100, 40)
@@ -311,7 +311,7 @@ while True:
         display.blit(PERKSButton, (PERKSButtonRect.x, PERKSButtonRect.y))
 
         # Display lower bar of Stats screen
-        display.blit(font.render("██████████▌██████████████████████████████████▌███████████", True, (50, 50, 50)),
+        display.blit(font.render("██████████▌██████████████████████████████████▌███████████", True, (25, 25, 25)),
                      (34, heightY + 200))
         display.blit(
             font_scaled.render("                        ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀          ", True, (174, 174, 174)),
